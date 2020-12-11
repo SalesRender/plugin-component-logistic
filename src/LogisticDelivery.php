@@ -18,7 +18,7 @@ class LogisticDelivery extends EnumHelper
     const PICKUP_POINT = 200;
     const COURIER = 300;
 
-    private string $method;
+    private int $method;
 
     /**
      * LogisticDelivery constructor.
@@ -31,12 +31,7 @@ class LogisticDelivery extends EnumHelper
         $this->method = $method;
     }
 
-    public function get(): string
-    {
-        return $this->method;
-    }
-
-    public function __toString(): string
+    public function get(): int
     {
         return $this->method;
     }
