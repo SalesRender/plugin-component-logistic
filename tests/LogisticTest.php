@@ -1,124 +1,70 @@
 <?php
 /**
  * Created for plugin-component-logistic
- * Date: 10.12.2020
+ * Date: 14.12.2020
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
 namespace Leadvertex\Plugin\Components\Logistic;
 
-use Leadvertex\Components\MoneyValue\MoneyValue;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingTimeException;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\NegativeLogisticPriceException;
 use PHPUnit\Framework\TestCase;
 
 class LogisticTest extends TestCase
 {
-    private array $data;
+
+    private LogisticData $data;
+
+    private LogisticStatus $status_old;
+    private LogisticStatus $status_new;
+
+    private array $statuses;
 
     private Logistic $logistic;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->data = [
-            'some data' => [
-                'hello',
-                'world'
-            ],
+        $this->data = $this->createMock(LogisticData::class);
+
+        $this->status_old = $this->createMock(LogisticStatus::class);
+        $this->statuses = [
+            $this->createMock(LogisticStatus::class),
+            $this->createMock(LogisticStatus::class),
+            $this->status_old,
         ];
 
-        $this->logistic = new Logistic();
-        $this->logistic->setData($this->data);
+        $this->logistic = new Logistic($this->data, $this->statuses);
+
+        $this->status_new = $this->createMock(LogisticStatus::class);
     }
 
-
-    public function testGetData(): void
+    public function testGetSetData()
     {
         $this->assertSame($this->data, $this->logistic->getData());
-    }
-
-    public function testSetData(): void
-    {
-        $data = ['1', '2', 3];
+        $data = $this->createMock(LogisticData::class);
         $this->logistic->setData($data);
+        $this->assertNotSame($this->data, $this->logistic->getData());
         $this->assertSame($data, $this->logistic->getData());
     }
 
-    public function testSetTooBigData(): void
+    public function testGetStatus()
     {
-        $this->expectException(LogisticDataTooBigException::class);
-        $data = [];
-        for ($i = 1; $i <= 1000; $i++) {
-            $data[md5(random_bytes(10))] = md5(random_bytes(10));
-        }
-        $this->logistic->setData($data);
+        $this->assertSame($this->status_old, $this->logistic->getStatus());
     }
 
-    public function testGetSetTrack(): void
+    public function testGetStatuses()
     {
-        $this->assertNull($this->logistic->getTrack());
-
-        $track = new LogisticTrack('AB0_123-456-789cd');
-        $this->logistic->setTrack($track);
-        $this->assertSame($track, $this->logistic->getTrack());
-
-        $this->logistic->setTrack(null);
-        $this->assertNull($this->logistic->getTrack());
+        $this->assertSame(
+            array_reverse($this->statuses),
+            $this->logistic->getStatuses()
+        );
     }
 
-    public function testGetSetPrice(): void
+    public function testAddStatus()
     {
-        $this->assertNull($this->logistic->getPrice());
-        $price = new MoneyValue(100500);
-        $this->logistic->setPrice($price);
-        $this->assertSame($price, $this->logistic->getPrice());
-        $this->logistic->setPrice(null);
-        $this->assertNull($this->logistic->getPrice());
-    }
-
-    public function testSetPriceInvalid(): void
-    {
-        $this->expectException(NegativeLogisticPriceException::class);
-        $this->logistic->setPrice(new MoneyValue(-100500));
-    }
-
-    public function testGetSetShippingTime(): void
-    {
-        $this->assertNull($this->logistic->getShippingTime());
-        $hours = 24;
-        $this->logistic->setShippingTime($hours);
-        $this->assertSame($hours, $this->logistic->getShippingTime());
-        $this->logistic->setShippingTime(null);
-        $this->assertNull($this->logistic->getShippingTime());
-    }
-
-    public function testSetShippingTimeInvalid(): void
-    {
-        $this->expectException(ShippingTimeException::class);
-        $this->logistic->setShippingTime(5001);
-    }
-
-    public function testGetSetDelivery(): void
-    {
-        $this->assertNull($this->logistic->getDelivery());
-        $delivery = new LogisticDelivery(LogisticDelivery::COURIER);
-        $this->logistic->setDelivery($delivery);
-        $this->assertSame($delivery, $this->logistic->getDelivery());
-        $this->logistic->setDelivery(null);
-        $this->assertNull($this->logistic->getDelivery());
-    }
-
-    public function testGetSetCod(): void
-    {
-        $this->assertNull($this->logistic->isCod());
-        $this->logistic->setCod(true);
-        $this->assertTrue($this->logistic->isCod());
-        $this->logistic->setCod(false);
-        $this->assertFalse($this->logistic->isCod());
-        $this->logistic->setCod(null);
-        $this->assertNull($this->logistic->isCod());
+        $this->logistic->addStatus($this->status_new);
+        $this->assertSame($this->status_new, $this->logistic->getStatus());
+        $this->assertCount(4, $this->logistic->getStatuses());
     }
 
 }
