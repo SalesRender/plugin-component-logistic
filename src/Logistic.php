@@ -13,20 +13,17 @@ class Logistic
 
     private LogisticData $data;
 
-    /** @var LogisticStatus[] */
-    private array $statuses = [];
+    private LogisticStatus $status;
 
     /**
      * Logistic constructor.
      * @param LogisticData $data
-     * @param LogisticStatus[] $statuses
+     * @param LogisticStatus $status
      */
-    public function __construct(LogisticData $data, array $statuses = [])
+    public function __construct(LogisticData $data, LogisticStatus $status)
     {
         $this->data = $data;
-        foreach ($statuses as $status) {
-            $this->addStatus($status);
-        }
+        $this->status = $status;
     }
 
     public function getData(): LogisticData
@@ -41,20 +38,12 @@ class Logistic
 
     public function getStatus(): LogisticStatus
     {
-        return $this->statuses[array_key_last($this->statuses)];
+        return $this->status;
     }
 
-    /**
-     * @return LogisticStatus[]
-     */
-    public function getStatuses(): array
+    public function setStatus(LogisticStatus $status): void
     {
-        return array_reverse($this->statuses);
-    }
-
-    public function addStatus(LogisticStatus $status): void
-    {
-        $this->statuses[] = $status;
+        $this->status = $status;
     }
 
 }
