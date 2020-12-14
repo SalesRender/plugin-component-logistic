@@ -7,8 +7,6 @@
 
 namespace Leadvertex\Plugin\Components\Logistic;
 
-use DateTime;
-use DateTimeImmutable;
 use Leadvertex\Components\MoneyValue\MoneyValue;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingTimeException;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
@@ -68,27 +66,6 @@ class LogisticTest extends TestCase
 
         $this->logistic->setTrack(null);
         $this->assertNull($this->logistic->getTrack());
-    }
-
-    public function testGetSetStatus(): void
-    {
-        $this->assertNull($this->logistic->getStatus());
-        $this->assertNull($this->logistic->getStatusChangedAt());
-
-        $status = new LogisticTrackStatus(LogisticTrackStatus::ACCEPTED);
-        $datetime = new DateTimeImmutable('1991-09-05 13:00:00');
-
-        $this->logistic->setStatus($status, $datetime);
-        $this->assertSame($status, $this->logistic->getStatus());
-        $this->assertSame($datetime, $this->logistic->getStatusChangedAt());
-
-        $this->logistic->setStatus($status);
-        $this->assertSame($status, $this->logistic->getStatus());
-        $this->assertLessThan(3, $this->logistic->getStatusChangedAt()->diff(new DateTime())->format('s'));
-
-        $this->logistic->setStatus(null);
-        $this->assertNull($this->logistic->getStatus());
-        $this->assertNull($this->logistic->getStatusChangedAt());
     }
 
     public function testGetSetPrice(): void

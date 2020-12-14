@@ -8,9 +8,10 @@
 namespace Leadvertex\Plugin\Components\Logistic;
 
 
+use JsonSerializable;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticTrackException;
 
-class LogisticTrack
+class LogisticTrack implements JsonSerializable
 {
 
     private string $track;
@@ -39,4 +40,8 @@ class LogisticTrack
         return $this->track;
     }
 
+    public function jsonSerialize(): string
+    {
+        return $this->track;
+    }
 }

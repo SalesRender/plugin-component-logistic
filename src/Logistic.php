@@ -8,22 +8,16 @@
 namespace Leadvertex\Plugin\Components\Logistic;
 
 
-use DateTimeImmutable;
+use JsonSerializable;
 use Leadvertex\Components\MoneyValue\MoneyValue;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\NegativeLogisticPriceException;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingTimeException;
 
-class Logistic
+class Logistic implements JsonSerializable
 {
 
-    protected ?array $data = null;
-
     protected ?LogisticTrack $track = null;
-
-    protected ?LogisticTrackStatus $status = null;
-
-    protected ?DateTimeImmutable $statusChangedAt = null;
 
     protected ?MoneyValue $price = null;
 
@@ -32,6 +26,8 @@ class Logistic
     protected ?LogisticDelivery $delivery = null;
 
     protected ?bool $cod = null;
+
+    protected ?array $data = null;
 
     public function getData(): ?array
     {
@@ -62,35 +58,6 @@ class Logistic
     public function setTrack(?LogisticTrack $track): self
     {
         $this->track = $track;
-        return $this;
-    }
-
-    public function getStatus(): ?LogisticTrackStatus
-    {
-        return $this->status;
-    }
-
-    public function getStatusChangedAt(): ?DateTimeImmutable
-    {
-        return $this->statusChangedAt;
-    }
-
-    /**
-     * @param LogisticTrackStatus |null $status
-     * @param DateTimeImmutable|null $dateTime
-     * @return Logistic
-     */
-    public function setStatus(?LogisticTrackStatus $status, DateTimeImmutable $dateTime = null): Logistic
-    {
-        $this->status = $status;
-
-        $dateTime = $dateTime ?? new DateTimeImmutable();
-        $this->statusChangedAt = $dateTime;
-
-        if (is_null($status)) {
-            $this->statusChangedAt = null;
-        }
-
         return $this;
     }
 
@@ -176,4 +143,14 @@ class Logistic
         return $this;
     }
 
+    public function jsonSerialize(): array
+    {
+        return [
+            'track' => $this->getTrack(),
+            'price' => $this->getPrice(),
+            'shippingTime' => $this->getShippingTime(),
+            'delivery' => $this->getDelivery(),
+            'cod' => $this->isCod(),
+        ];
+    }
 }

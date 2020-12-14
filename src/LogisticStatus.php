@@ -8,11 +8,12 @@
 namespace Leadvertex\Plugin\Components\Logistic;
 
 
+use JsonSerializable;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticStatusTooLongException;
 use XAKEPEHOK\EnumHelper\EnumHelper;
 use XAKEPEHOK\EnumHelper\Exception\OutOfEnumException;
 
-class LogisticTrackStatus extends EnumHelper
+class LogisticStatus extends EnumHelper implements JsonSerializable
 {
 
     const UNREGISTERED = -1;
@@ -29,6 +30,7 @@ class LogisticTrackStatus extends EnumHelper
     const RETURNING_TO_SENDER = 650;
     const DELIVERED_TO_SENDER = 699;
 
+    private int $timestamp;
     private int $code;
     private ?string $text;
 
@@ -36,10 +38,11 @@ class LogisticTrackStatus extends EnumHelper
      * LogisticStatus constructor.
      * @param int $code
      * @param string|null $text
-     * @throws OutOfEnumException
+     * @param int|null $timestamp
      * @throws LogisticStatusTooLongException
+     * @throws OutOfEnumException
      */
-    public function __construct(int $code, string $text = null)
+    public function __construct(int $code, string $text = null, ?int $timestamp = null)
     {
         self::guardValidValue($code);
 
@@ -51,6 +54,13 @@ class LogisticTrackStatus extends EnumHelper
 
         $text = trim($text);
         $this->text = empty($text) ? null : $text;
+
+        $this->timestamp = $timestamp ?? time();
+    }
+
+    public function getTimestamp(): int
+    {
+        return $this->timestamp;
     }
 
     public function getCode(): int
@@ -79,6 +89,15 @@ class LogisticTrackStatus extends EnumHelper
             self::RETURNED,
             self::RETURNING_TO_SENDER,
             self::DELIVERED_TO_SENDER,
+        ];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'timestamp' => $this->getTimestamp(),
+            'code' => $this->getCode(),
+            'text' => $this->getText(),
         ];
     }
 }

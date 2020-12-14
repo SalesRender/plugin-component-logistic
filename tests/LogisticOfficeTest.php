@@ -52,25 +52,25 @@ class LogisticOfficeTest extends TestCase
         $this->officeNulls = new LogisticOffice(null, [], null);
     }
 
-    public function testGetAddress()
+    public function testGetAddress(): void
     {
         $this->assertSame($this->address, $this->office->getAddress());
         $this->assertNull($this->officeNulls->getAddress());
     }
 
-    public function testGetPhones()
+    public function testGetPhones(): void
     {
         $this->assertSame($this->phones, $this->office->getPhones());
         $this->assertEmpty($this->officeNulls->getPhones());
     }
 
-    public function testGetOpeningHours()
+    public function testGetOpeningHours(): void
     {
         $this->assertSame($this->openingHours, $this->office->getOpeningHours());
         $this->assertNull($this->officeNulls->getOpeningHours());
     }
 
-    public function testJsonSerialize()
+    public function testJsonSerialize(): void
     {
         $this->assertEquals(
             '{"address":{"postcode":"","region":"","city":"","address_1":"","address_2":""},"phones":["88002000600","+78002000600"],"openingHours":{"monday":["09:00-12:00","13:00-18:00"],"tuesday":["09:00-12:00","13:00-18:00"],"wednesday":["09:00-12:00"],"thursday":["09:00-12:00","13:00-18:00"],"friday":["09:00-12:00","13:00-20:00"],"saturday":["09:00-12:00","13:00-16:00"],"sunday":[]}}',

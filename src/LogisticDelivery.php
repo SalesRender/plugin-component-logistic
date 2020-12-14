@@ -8,10 +8,11 @@
 namespace Leadvertex\Plugin\Components\Logistic;
 
 
+use JsonSerializable;
 use XAKEPEHOK\EnumHelper\EnumHelper;
 use XAKEPEHOK\EnumHelper\Exception\OutOfEnumException;
 
-class LogisticDelivery extends EnumHelper
+class LogisticDelivery extends EnumHelper implements JsonSerializable
 {
 
     const SELF_PICKUP = 100;
@@ -43,5 +44,10 @@ class LogisticDelivery extends EnumHelper
             self::PICKUP_POINT,
             self::SELF_PICKUP
         ];
+    }
+
+    public function jsonSerialize(): int
+    {
+        return $this->method;
     }
 }
