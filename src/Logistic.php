@@ -13,9 +13,9 @@ use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException
 class Logistic
 {
 
-    private LogisticInfo $info;
+    protected LogisticInfo $info;
 
-    private LogisticStatus $status;
+    protected LogisticStatus $status;
 
     protected ?array $data = null;
 

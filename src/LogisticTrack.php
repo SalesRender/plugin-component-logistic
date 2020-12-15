@@ -14,7 +14,7 @@ use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticTrackException;
 class LogisticTrack implements JsonSerializable
 {
 
-    private string $track;
+    protected string $track;
 
     /**
      * LogisticTrack constructor.

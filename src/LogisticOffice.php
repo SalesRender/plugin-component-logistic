@@ -16,9 +16,9 @@ use Leadvertex\Plugin\Components\Logistic\Components\OpeningHours;
 class LogisticOffice implements JsonSerializable
 {
 
-    private ?Address $address;
-    private array $phones;
-    private ?OpeningHours $openingHours;
+    protected ?Address $address;
+    protected array $phones;
+    protected ?OpeningHours $openingHours;
 
     /**
      * LogisticOffice constructor.

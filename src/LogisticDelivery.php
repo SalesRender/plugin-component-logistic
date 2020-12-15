@@ -19,7 +19,7 @@ class LogisticDelivery extends EnumHelper implements JsonSerializable
     const PICKUP_POINT = 200;
     const COURIER = 300;
 
-    private int $method;
+    protected int $method;
 
     /**
      * LogisticDelivery constructor.

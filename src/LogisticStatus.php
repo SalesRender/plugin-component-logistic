@@ -30,9 +30,9 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     const RETURNING_TO_SENDER = 650;
     const DELIVERED_TO_SENDER = 699;
 
-    private int $timestamp;
-    private int $code;
-    private ?string $text;
+    protected int $timestamp;
+    protected int $code;
+    protected ?string $text;
 
     /**
      * LogisticStatus constructor.
