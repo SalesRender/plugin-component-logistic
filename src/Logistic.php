@@ -8,32 +8,39 @@
 namespace Leadvertex\Plugin\Components\Logistic;
 
 
+use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
+
 class Logistic
 {
 
-    private LogisticData $data;
+    private LogisticInfo $info;
 
     private LogisticStatus $status;
 
+    protected ?array $data = null;
+
     /**
      * Logistic constructor.
-     * @param LogisticData $data
+     * @param LogisticInfo $info
      * @param LogisticStatus $status
+     * @param array|null $data
+     * @throws LogisticDataTooBigException
      */
-    public function __construct(LogisticData $data, LogisticStatus $status)
+    public function __construct(LogisticInfo $info, LogisticStatus $status, array $data = null)
     {
-        $this->data = $data;
+        $this->info = $info;
         $this->status = $status;
+        $this->setData($data);
     }
 
-    public function getData(): LogisticData
+    public function getInfo(): LogisticInfo
     {
-        return $this->data;
+        return $this->info;
     }
 
-    public function setData(LogisticData $data): void
+    public function setInfo(LogisticInfo $info): void
     {
-        $this->data = $data;
+        $this->info = $info;
     }
 
     public function getStatus(): LogisticStatus
@@ -44,6 +51,30 @@ class Logistic
     public function setStatus(LogisticStatus $status): void
     {
         $this->status = $status;
+    }
+
+    public function getData(): ?array
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param array|null $data
+     * @throws LogisticDataTooBigException
+     */
+    public function setData(?array $data): void
+    {
+        if (is_null($data)) {
+            $this->data = null;
+            return;
+        }
+
+        $size = mb_strlen(serialize($data), '8bit');
+        if ($size > 2 * 1024) {
+            throw new LogisticDataTooBigException("Logistic data size is {$size} bytes, but max is 2048");
+        }
+
+        $this->data = $data;
     }
 
 }

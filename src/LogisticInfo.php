@@ -10,11 +10,10 @@ namespace Leadvertex\Plugin\Components\Logistic;
 
 use JsonSerializable;
 use Leadvertex\Components\MoneyValue\MoneyValue;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\NegativeLogisticPriceException;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingTimeException;
 
-class LogisticData implements JsonSerializable
+class LogisticInfo implements JsonSerializable
 {
 
     protected ?LogisticTrack $track = null;
@@ -26,29 +25,6 @@ class LogisticData implements JsonSerializable
     protected ?LogisticDelivery $delivery = null;
 
     protected ?bool $cod = null;
-
-    protected ?array $data = null;
-
-    public function getData(): ?array
-    {
-        return $this->data;
-    }
-
-    /**
-     * @param array $data
-     * @return LogisticData
-     * @throws LogisticDataTooBigException
-     */
-    public function setData(array $data): LogisticData
-    {
-        $size = mb_strlen(serialize($data), '8bit');
-        if ($size > 2 * 1024) {
-            throw new LogisticDataTooBigException("Logistic data size is {$size} bytes, but max is 2048");
-        }
-
-        $this->data = $data;
-        return $this;
-    }
 
     public function getTrack(): ?LogisticTrack
     {
@@ -68,10 +44,10 @@ class LogisticData implements JsonSerializable
 
     /**
      * @param MoneyValue|null $price
-     * @return LogisticData
+     * @return LogisticInfo
      * @throws NegativeLogisticPriceException
      */
-    public function setPrice(?MoneyValue $price): LogisticData
+    public function setPrice(?MoneyValue $price): LogisticInfo
     {
         if ($price && $price->getAmount() < 0) {
             throw new NegativeLogisticPriceException('Logistic price can not be negative');
@@ -88,10 +64,10 @@ class LogisticData implements JsonSerializable
 
     /**
      * @param int|null $shippingTime
-     * @return LogisticData
+     * @return LogisticInfo
      * @throws ShippingTimeException
      */
-    public function setShippingTime(?int $shippingTime): LogisticData
+    public function setShippingTime(?int $shippingTime): LogisticInfo
     {
         if ($shippingTime < 0 || $shippingTime > 5000) {
             throw new ShippingTimeException('Shipping time (in hours) should be between 0 and 5000');
@@ -106,7 +82,7 @@ class LogisticData implements JsonSerializable
         return $this->delivery;
     }
 
-    public function setDelivery(?LogisticDelivery $delivery): LogisticData
+    public function setDelivery(?LogisticDelivery $delivery): LogisticInfo
     {
         $this->delivery = $delivery;
         return $this;
@@ -120,7 +96,7 @@ class LogisticData implements JsonSerializable
         return $this->cod;
     }
 
-    public function setCod(?bool $cod): LogisticData
+    public function setCod(?bool $cod): LogisticInfo
     {
         $this->cod = $cod;
         return $this;

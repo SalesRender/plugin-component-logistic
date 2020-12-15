@@ -9,51 +9,18 @@ namespace Leadvertex\Plugin\Components\Logistic;
 
 use Leadvertex\Components\MoneyValue\MoneyValue;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingTimeException;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\NegativeLogisticPriceException;
 use PHPUnit\Framework\TestCase;
 
-class LogisticDataTest extends TestCase
+class LogisticInfoTest extends TestCase
 {
-    private array $data;
 
-    private LogisticData $logistic;
+    private LogisticInfo $logistic;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->data = [
-            'some data' => [
-                'hello',
-                'world'
-            ],
-        ];
-
-        $this->logistic = new LogisticData();
-        $this->logistic->setData($this->data);
-    }
-
-
-    public function testGetData(): void
-    {
-        $this->assertSame($this->data, $this->logistic->getData());
-    }
-
-    public function testSetData(): void
-    {
-        $data = ['1', '2', 3];
-        $this->logistic->setData($data);
-        $this->assertSame($data, $this->logistic->getData());
-    }
-
-    public function testSetTooBigData(): void
-    {
-        $this->expectException(LogisticDataTooBigException::class);
-        $data = [];
-        for ($i = 1; $i <= 1000; $i++) {
-            $data[md5(random_bytes(10))] = md5(random_bytes(10));
-        }
-        $this->logistic->setData($data);
+        $this->logistic = new LogisticInfo();
     }
 
     public function testGetSetTrack(): void
