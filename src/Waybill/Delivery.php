@@ -23,10 +23,10 @@ class Delivery extends EnumHelper implements JsonSerializable
 
     /**
      * LogisticDelivery constructor.
-     * @param string $method
+     * @param int $method
      * @throws OutOfEnumException
      */
-    public function __construct(string $method)
+    public function __construct(int $method)
     {
         self::guardValidValue($method);
         $this->method = $method;
