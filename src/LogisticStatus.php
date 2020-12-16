@@ -18,6 +18,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
 
     const UNREGISTERED = -1;
     const CREATED = 0;
+    const REGISTERED = 50;
     const ACCEPTED = 100;
     const PACKED = 150;
     const IN_TRANSIT = 200;
