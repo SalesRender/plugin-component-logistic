@@ -22,14 +22,14 @@ class Logistic
 
     /**
      * Logistic constructor.
-     * @param Waybill $info
+     * @param Waybill $waybill
      * @param LogisticStatus $status
      * @param array|null $data
      * @throws LogisticDataTooBigException
      */
-    public function __construct(Waybill $info, LogisticStatus $status, array $data = null)
+    public function __construct(Waybill $waybill, LogisticStatus $status, array $data = null)
     {
-        $this->waybill = $info;
+        $this->waybill = $waybill;
         $this->status = $status;
         $this->setData($data);
     }
