@@ -5,29 +5,29 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic;
+namespace Leadvertex\Plugin\Components\Logistic\Waybill;
 
 use Leadvertex\Components\MoneyValue\MoneyValue;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingTimeException;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\NegativeLogisticPriceException;
 use PHPUnit\Framework\TestCase;
 
-class LogisticInfoTest extends TestCase
+class WaybillTest extends TestCase
 {
 
-    private LogisticInfo $logistic;
+    private Waybill $logistic;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->logistic = new LogisticInfo();
+        $this->logistic = new Waybill();
     }
 
     public function testGetSetTrack(): void
     {
         $this->assertNull($this->logistic->getTrack());
 
-        $track = new LogisticTrack('AB0_123-456-789cd');
+        $track = new Track('AB0_123-456-789cd');
         $this->logistic->setTrack($track);
         $this->assertSame($track, $this->logistic->getTrack());
 
@@ -70,7 +70,7 @@ class LogisticInfoTest extends TestCase
     public function testGetSetDelivery(): void
     {
         $this->assertNull($this->logistic->getDelivery());
-        $delivery = new LogisticDelivery(LogisticDelivery::COURIER);
+        $delivery = new Delivery(Delivery::COURIER);
         $this->logistic->setDelivery($delivery);
         $this->assertSame($delivery, $this->logistic->getDelivery());
         $this->logistic->setDelivery(null);

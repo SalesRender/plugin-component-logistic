@@ -5,7 +5,7 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic;
+namespace Leadvertex\Plugin\Components\Logistic\Waybill;
 
 
 use JsonSerializable;
@@ -13,25 +13,25 @@ use Leadvertex\Components\MoneyValue\MoneyValue;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\NegativeLogisticPriceException;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingTimeException;
 
-class LogisticInfo implements JsonSerializable
+class Waybill implements JsonSerializable
 {
 
-    protected ?LogisticTrack $track = null;
+    protected ?Track $track = null;
 
     protected ?MoneyValue $price = null;
 
     protected ?int $shippingTime = null;
 
-    protected ?LogisticDelivery $delivery = null;
+    protected ?Delivery $delivery = null;
 
     protected ?bool $cod = null;
 
-    public function getTrack(): ?LogisticTrack
+    public function getTrack(): ?Track
     {
         return $this->track;
     }
 
-    public function setTrack(?LogisticTrack $track): self
+    public function setTrack(?Track $track): self
     {
         $this->track = $track;
         return $this;
@@ -44,10 +44,10 @@ class LogisticInfo implements JsonSerializable
 
     /**
      * @param MoneyValue|null $price
-     * @return LogisticInfo
+     * @return Waybill
      * @throws NegativeLogisticPriceException
      */
-    public function setPrice(?MoneyValue $price): LogisticInfo
+    public function setPrice(?MoneyValue $price): Waybill
     {
         if ($price && $price->getAmount() < 0) {
             throw new NegativeLogisticPriceException('Logistic price can not be negative');
@@ -64,10 +64,10 @@ class LogisticInfo implements JsonSerializable
 
     /**
      * @param int|null $shippingTime
-     * @return LogisticInfo
+     * @return Waybill
      * @throws ShippingTimeException
      */
-    public function setShippingTime(?int $shippingTime): LogisticInfo
+    public function setShippingTime(?int $shippingTime): Waybill
     {
         if ($shippingTime < 0 || $shippingTime > 5000) {
             throw new ShippingTimeException('Shipping time (in hours) should be between 0 and 5000');
@@ -77,12 +77,12 @@ class LogisticInfo implements JsonSerializable
         return $this;
     }
 
-    public function getDelivery(): ?LogisticDelivery
+    public function getDelivery(): ?Delivery
     {
         return $this->delivery;
     }
 
-    public function setDelivery(?LogisticDelivery $delivery): LogisticInfo
+    public function setDelivery(?Delivery $delivery): Waybill
     {
         $this->delivery = $delivery;
         return $this;
@@ -96,7 +96,7 @@ class LogisticInfo implements JsonSerializable
         return $this->cod;
     }
 
-    public function setCod(?bool $cod): LogisticInfo
+    public function setCod(?bool $cod): Waybill
     {
         $this->cod = $cod;
         return $this;

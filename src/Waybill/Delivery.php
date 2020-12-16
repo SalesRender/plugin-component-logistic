@@ -5,14 +5,14 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic;
+namespace Leadvertex\Plugin\Components\Logistic\Waybill;
 
 
 use JsonSerializable;
 use XAKEPEHOK\EnumHelper\EnumHelper;
 use XAKEPEHOK\EnumHelper\Exception\OutOfEnumException;
 
-class LogisticDelivery extends EnumHelper implements JsonSerializable
+class Delivery extends EnumHelper implements JsonSerializable
 {
 
     const SELF_PICKUP = 100;

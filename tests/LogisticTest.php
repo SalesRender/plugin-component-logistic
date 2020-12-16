@@ -8,12 +8,13 @@
 namespace Leadvertex\Plugin\Components\Logistic;
 
 use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
+use Leadvertex\Plugin\Components\Logistic\Waybill\Waybill;
 use PHPUnit\Framework\TestCase;
 
 class LogisticTest extends TestCase
 {
 
-    private LogisticInfo $info;
+    private Waybill $info;
     private LogisticStatus $status;
     private array $data;
     private Logistic $logistic;
@@ -21,7 +22,7 @@ class LogisticTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->info = $this->createMock(LogisticInfo::class);
+        $this->info = $this->createMock(Waybill::class);
         $this->status = $this->createMock(LogisticStatus::class);
         $this->data = [
             'hello' => [
@@ -33,11 +34,11 @@ class LogisticTest extends TestCase
 
     public function testGetSetInfo()
     {
-        $this->assertSame($this->info, $this->logistic->getInfo());
-        $data = $this->createMock(LogisticInfo::class);
-        $this->logistic->setInfo($data);
-        $this->assertNotSame($this->info, $this->logistic->getInfo());
-        $this->assertSame($data, $this->logistic->getInfo());
+        $this->assertSame($this->info, $this->logistic->getWaybill());
+        $data = $this->createMock(Waybill::class);
+        $this->logistic->setWaybill($data);
+        $this->assertNotSame($this->info, $this->logistic->getWaybill());
+        $this->assertSame($data, $this->logistic->getWaybill());
     }
 
     public function testGetSetStatus()

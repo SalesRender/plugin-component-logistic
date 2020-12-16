@@ -5,13 +5,13 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic;
+namespace Leadvertex\Plugin\Components\Logistic\Waybill;
 
 
 use JsonSerializable;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticTrackException;
 
-class LogisticTrack implements JsonSerializable
+class Track implements JsonSerializable
 {
 
     protected string $track;

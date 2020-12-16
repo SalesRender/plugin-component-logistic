@@ -5,12 +5,12 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic;
+namespace Leadvertex\Plugin\Components\Logistic\Waybill;
 
 use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticTrackException;
 use PHPUnit\Framework\TestCase;
 
-class LogisticTrackTest extends TestCase
+class TrackTest extends TestCase
 {
 
     /**
@@ -20,7 +20,7 @@ class LogisticTrackTest extends TestCase
      */
     public function testConstructValidTrack(string $number): void
     {
-        $track = new LogisticTrack($number);
+        $track = new Track($number);
         $this->assertSame(trim($number), $track->get());
         $this->assertSame(trim($number), (string) $track);
     }
@@ -32,7 +32,7 @@ class LogisticTrackTest extends TestCase
     public function testConstructInvalidTrack(string $track): void
     {
         $this->expectException(LogisticTrackException::class);
-        new LogisticTrack($track);
+        new Track($track);
     }
 
     public function validTrackDataProvider(): array

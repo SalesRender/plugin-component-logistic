@@ -9,11 +9,12 @@ namespace Leadvertex\Plugin\Components\Logistic;
 
 
 use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
+use Leadvertex\Plugin\Components\Logistic\Waybill\Waybill;
 
 class Logistic
 {
 
-    protected LogisticInfo $info;
+    protected Waybill $waybill;
 
     protected LogisticStatus $status;
 
@@ -21,26 +22,26 @@ class Logistic
 
     /**
      * Logistic constructor.
-     * @param LogisticInfo $info
+     * @param Waybill $info
      * @param LogisticStatus $status
      * @param array|null $data
      * @throws LogisticDataTooBigException
      */
-    public function __construct(LogisticInfo $info, LogisticStatus $status, array $data = null)
+    public function __construct(Waybill $info, LogisticStatus $status, array $data = null)
     {
-        $this->info = $info;
+        $this->waybill = $info;
         $this->status = $status;
         $this->setData($data);
     }
 
-    public function getInfo(): LogisticInfo
+    public function getWaybill(): Waybill
     {
-        return $this->info;
+        return $this->waybill;
     }
 
-    public function setInfo(LogisticInfo $info): void
+    public function setWaybill(Waybill $waybill): void
     {
-        $this->info = $info;
+        $this->waybill = $waybill;
     }
 
     public function getStatus(): LogisticStatus
