@@ -26,6 +26,20 @@ class Waybill implements JsonSerializable
 
     protected ?bool $cod = null;
 
+    public function __construct(Track $track = null, MoneyValue $price = null, int $shippingTimeInHours = null, Delivery $delivery = null, bool $cod = null)
+    {
+        $this->track = $track;
+
+        $this->guardPrice($price);
+        $this->price = $price;
+
+        $this->guardShippingTime($shippingTimeInHours);
+        $this->shippingTime = $shippingTimeInHours;
+
+        $this->delivery = $delivery;
+        $this->cod = $cod;
+    }
+
     public function getTrack(): ?Track
     {
         return $this->track;
@@ -33,8 +47,10 @@ class Waybill implements JsonSerializable
 
     public function setTrack(?Track $track): self
     {
-        $this->track = $track;
-        return $this;
+        $clone = clone $this;
+        $clone->track = $track;
+
+        return $clone;
     }
 
     public function getPrice(): ?MoneyValue
@@ -49,12 +65,12 @@ class Waybill implements JsonSerializable
      */
     public function setPrice(?MoneyValue $price): Waybill
     {
-        if ($price && $price->getAmount() < 0) {
-            throw new NegativeLogisticPriceException('Logistic price can not be negative');
-        }
+        $this->guardPrice($price);
 
-        $this->price = $price;
-        return $this;
+        $clone = clone $this;
+        $clone->price = $price;
+
+        return $clone;
     }
 
     public function getShippingTime(): ?int
@@ -63,18 +79,18 @@ class Waybill implements JsonSerializable
     }
 
     /**
-     * @param int|null $shippingTime
+     * @param int|null $hours
      * @return Waybill
      * @throws ShippingTimeException
      */
-    public function setShippingTime(?int $shippingTime): Waybill
+    public function setShippingTime(?int $hours): Waybill
     {
-        if ($shippingTime < 0 || $shippingTime > 5000) {
-            throw new ShippingTimeException('Shipping time (in hours) should be between 0 and 5000');
-        }
+        $this->guardShippingTime($hours);
 
-        $this->shippingTime = $shippingTime;
-        return $this;
+        $clone = clone $this;
+        $clone->shippingTime = $hours;
+
+        return $clone;
     }
 
     public function getDelivery(): ?Delivery
@@ -84,8 +100,10 @@ class Waybill implements JsonSerializable
 
     public function setDelivery(?Delivery $delivery): Waybill
     {
-        $this->delivery = $delivery;
-        return $this;
+        $clone = clone $this;
+        $clone->delivery = $delivery;
+
+        return $clone;
     }
 
     /**
@@ -98,8 +116,10 @@ class Waybill implements JsonSerializable
 
     public function setCod(?bool $cod): Waybill
     {
-        $this->cod = $cod;
-        return $this;
+        $clone = clone $this;
+        $clone->cod = $cod;
+
+        return $clone;
     }
 
     public function jsonSerialize(): array
@@ -111,5 +131,19 @@ class Waybill implements JsonSerializable
             'delivery' => $this->getDelivery(),
             'cod' => $this->isCod(),
         ];
+    }
+
+    private function guardPrice(?MoneyValue $price): void
+    {
+        if ($price && $price->getAmount() < 0) {
+            throw new NegativeLogisticPriceException('Logistic price can not be negative');
+        }
+    }
+
+    private function guardShippingTime(?int $hours): void
+    {
+        if ($hours < 0 || $hours > 5000) {
+            throw new ShippingTimeException('Shipping time (in hours) should be between 0 and 5000');
+        }
     }
 }
