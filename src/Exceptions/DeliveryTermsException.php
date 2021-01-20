@@ -10,7 +10,7 @@ namespace Leadvertex\Plugin\Components\Logistic\Exceptions;
 
 use Exception;
 
-class NegativeLogisticPriceException extends Exception
+class DeliveryTermsException extends Exception
 {
 
 }

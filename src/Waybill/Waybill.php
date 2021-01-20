@@ -10,8 +10,8 @@ namespace Leadvertex\Plugin\Components\Logistic\Waybill;
 
 use JsonSerializable;
 use Leadvertex\Components\MoneyValue\MoneyValue;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\NegativeLogisticPriceException;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingTimeException;
+use Leadvertex\Plugin\Components\Logistic\Exceptions\NegativePriceException;
+use XAKEPEHOK\ValueObjectBuilder\VOB;
 
 class Waybill implements JsonSerializable
 {
@@ -20,23 +20,36 @@ class Waybill implements JsonSerializable
 
     protected ?MoneyValue $price = null;
 
-    protected ?int $shippingTime = null;
+    protected ?DeliveryTerms $deliveryTerms = null;
 
-    protected ?Delivery $delivery = null;
+    protected ?DeliveryType $deliveryType = null;
 
     protected ?bool $cod = null;
 
-    public function __construct(Track $track = null, MoneyValue $price = null, int $shippingTimeInHours = null, Delivery $delivery = null, bool $cod = null)
+    /**
+     * Waybill constructor.
+     * @param Track|null $track
+     * @param MoneyValue|null $price
+     * @param DeliveryTerms|null $deliveryTerms
+     * @param DeliveryType|null $deliveryType
+     * @param bool|null $cod
+     * @throws NegativePriceException
+     */
+    public function __construct(
+        Track $track = null,
+        MoneyValue $price = null,
+        DeliveryTerms $deliveryTerms = null,
+        DeliveryType $deliveryType = null,
+        bool $cod = null
+    )
     {
         $this->track = $track;
 
         $this->guardPrice($price);
         $this->price = $price;
 
-        $this->guardShippingTime($shippingTimeInHours);
-        $this->shippingTime = $shippingTimeInHours;
-
-        $this->delivery = $delivery;
+        $this->deliveryTerms = $deliveryTerms;
+        $this->deliveryType = $deliveryType;
         $this->cod = $cod;
     }
 
@@ -61,7 +74,7 @@ class Waybill implements JsonSerializable
     /**
      * @param MoneyValue|null $price
      * @return Waybill
-     * @throws NegativeLogisticPriceException
+     * @throws NegativePriceException
      */
     public function setPrice(?MoneyValue $price): Waybill
     {
@@ -73,42 +86,31 @@ class Waybill implements JsonSerializable
         return $clone;
     }
 
-    public function getShippingTime(): ?int
+    public function getDeliveryTerms(): ?DeliveryTerms
     {
-        return $this->shippingTime;
+        return $this->deliveryTerms;
     }
 
-    /**
-     * @param int|null $hours
-     * @return Waybill
-     * @throws ShippingTimeException
-     */
-    public function setShippingTime(?int $hours): Waybill
+    public function setDeliveryTerms(?DeliveryTerms $deliveryTerms): Waybill
     {
-        $this->guardShippingTime($hours);
-
         $clone = clone $this;
-        $clone->shippingTime = $hours;
+        $clone->deliveryTerms = $deliveryTerms;
+        return $clone;
+    }
+
+    public function getDeliveryType(): ?DeliveryType
+    {
+        return $this->deliveryType;
+    }
+
+    public function setDeliveryType(?DeliveryType $deliveryType): Waybill
+    {
+        $clone = clone $this;
+        $clone->deliveryType = $deliveryType;
 
         return $clone;
     }
 
-    public function getDelivery(): ?Delivery
-    {
-        return $this->delivery;
-    }
-
-    public function setDelivery(?Delivery $delivery): Waybill
-    {
-        $clone = clone $this;
-        $clone->delivery = $delivery;
-
-        return $clone;
-    }
-
-    /**
-     * @return bool|null
-     */
     public function isCod(): ?bool
     {
         return $this->cod;
@@ -126,24 +128,33 @@ class Waybill implements JsonSerializable
     {
         return [
             'track' => $this->getTrack(),
-            'price' => $this->getPrice(),
-            'shippingTime' => $this->getShippingTime(),
-            'delivery' => $this->getDelivery(),
+            'price' => $this->getPrice() ? $this->getPrice()->getAmount() : null,
+            'deliveryTerms' => $this->getDeliveryTerms(),
+            'deliveryType' => $this->getDeliveryType(),
             'cod' => $this->isCod(),
         ];
     }
 
+    /**
+     * @param MoneyValue|null $price
+     * @throws NegativePriceException
+     */
     private function guardPrice(?MoneyValue $price): void
     {
         if ($price && $price->getAmount() < 0) {
-            throw new NegativeLogisticPriceException('Logistic price can not be negative');
+            throw new NegativePriceException('Logistic price can not be negative');
         }
     }
 
-    private function guardShippingTime(?int $hours): void
+    public static function createFromArray(array $data): self
     {
-        if ($hours < 0 || $hours > 5000) {
-            throw new ShippingTimeException('Shipping time (in hours) should be between 0 and 5000');
-        }
+        $terms = $data['deliveryTerms'] ?? [];
+        return new Waybill(
+            VOB::build(Track::class, $data['track'] ?? null),
+            VOB::build(MoneyValue::class, $data['price'] ?? null),
+            VOB::buildFromValues(DeliveryTerms::class, [$terms['minHours'] ?? null, $terms['maxHours'] ?? null]),
+            VOB::build(DeliveryType::class, $data['deliveryType'] ?? null),
+            $data['cod'] ?? null,
+        );
     }
 }

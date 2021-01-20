@@ -13,28 +13,28 @@ use XAKEPEHOK\EnumHelper\Exception\OutOfEnumException;
 class DeliveryTest extends TestCase
 {
 
-    private Delivery $delivery;
+    private DeliveryType $delivery;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->delivery = new Delivery(Delivery::PICKUP_POINT);
+        $this->delivery = new DeliveryType(DeliveryType::PICKUP_POINT);
     }
 
     public function testConstructInvalidValue(): void
     {
         $this->expectException(OutOfEnumException::class);
-        new Delivery(100500);
+        new DeliveryType(100500);
     }
 
     public function testGet(): void
     {
-        $this->assertSame(Delivery::PICKUP_POINT, $this->delivery->get());
+        $this->assertSame(DeliveryType::PICKUP_POINT, $this->delivery->get());
     }
 
     public function testGetValues(): void
     {
-        $this->assertSame([300, 200, 100], Delivery::values());
+        $this->assertSame([300, 200, 100], DeliveryType::values());
     }
 
     public function testJsonSerialize()
