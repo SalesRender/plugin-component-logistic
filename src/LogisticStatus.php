@@ -79,6 +79,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
         return [
             self::UNREGISTERED,
             self::CREATED,
+            self::REGISTERED,
             self::ACCEPTED,
             self::PACKED,
             self::IN_TRANSIT,
