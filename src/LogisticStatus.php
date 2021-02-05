@@ -94,6 +94,26 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
         ];
     }
 
+    public static function code2strings(): array
+    {
+        return self::associative([
+            self::UNREGISTERED => 'UNREGISTERED',
+            self::CREATED => 'CREATED',
+            self::REGISTERED => 'REGISTERED',
+            self::ACCEPTED => 'ACCEPTED',
+            self::PACKED => 'PACKED',
+            self::IN_TRANSIT => 'IN_TRANSIT',
+            self::ARRIVED => 'ARRIVED',
+            self::ON_DELIVERY => 'ON_DELIVERY',
+            self::PENDING => 'PENDING',
+            self::DELIVERED => 'DELIVERED',
+            self::PAID => 'PAID',
+            self::RETURNED => 'RETURNED',
+            self::RETURNING_TO_SENDER => 'RETURNING_TO_SENDER',
+            self::DELIVERED_TO_SENDER => 'DELIVERED_TO_SENDER',
+        ]);
+    }
+
     public function jsonSerialize(): array
     {
         return [
