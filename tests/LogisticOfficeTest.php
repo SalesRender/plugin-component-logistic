@@ -28,7 +28,7 @@ class LogisticOfficeTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->address = new Address('', '', '');
+        $this->address = new Address('', '', '', '');
         $this->phones = [
             '88002000600',
             '+78002000600',
@@ -73,7 +73,7 @@ class LogisticOfficeTest extends TestCase
     public function testJsonSerialize(): void
     {
         $this->assertEquals(
-            '{"address":{"postcode":"","region":"","city":"","address_1":"","address_2":""},"phones":["88002000600","+78002000600"],"openingHours":{"monday":["09:00-12:00","13:00-18:00"],"tuesday":["09:00-12:00","13:00-18:00"],"wednesday":["09:00-12:00"],"thursday":["09:00-12:00","13:00-18:00"],"friday":["09:00-12:00","13:00-20:00"],"saturday":["09:00-12:00","13:00-16:00"],"sunday":[]}}',
+            '{"address":{"postcode":"","country":"","region":"","city":"","address_1":"","address_2":"","location":null},"phones":["88002000600","+78002000600"],"openingHours":{"monday":["09:00-12:00","13:00-18:00"],"tuesday":["09:00-12:00","13:00-18:00"],"wednesday":["09:00-12:00"],"thursday":["09:00-12:00","13:00-18:00"],"friday":["09:00-12:00","13:00-20:00"],"saturday":["09:00-12:00","13:00-16:00"],"sunday":[]}}',
             json_encode($this->office)
         );
     }
