@@ -34,6 +34,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     protected int $timestamp;
     protected int $code;
     protected ?string $text;
+    protected string $hash;
 
     /**
      * LogisticStatus constructor.
@@ -57,6 +58,8 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
         $this->text = empty($text) ? null : $text;
 
         $this->timestamp = $timestamp ?? time();
+
+        $this->hash = md5(json_encode($this->jsonSerialize()));
     }
 
     public function getTimestamp(): int
@@ -72,6 +75,11 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     public function getText(): ?string
     {
         return $this->text;
+    }
+
+    public function getHash(): string
+    {
+        return $this->hash;
     }
 
     public static function values(): array
