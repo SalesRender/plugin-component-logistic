@@ -34,13 +34,13 @@ class LogisticOfficeTest extends TestCase
             '+78002000600',
         ];
         $this->openingHours = new OpeningHours([
-            Day::MONDAY     => ['09:00-12:00', '13:00-18:00'],
-            Day::TUESDAY    => ['09:00-12:00', '13:00-18:00'],
-            Day::WEDNESDAY  => ['09:00-12:00'],
-            Day::THURSDAY   => ['09:00-12:00', '13:00-18:00'],
-            Day::FRIDAY     => ['09:00-12:00', '13:00-20:00'],
-            Day::SATURDAY   => ['09:00-12:00', '13:00-16:00'],
-            Day::SUNDAY     => [],
+            Day::MONDAY => ['09:00-12:00', '13:00-18:00'],
+            Day::TUESDAY => ['09:00-12:00', '13:00-18:00'],
+            Day::WEDNESDAY => ['09:00-12:00'],
+            Day::THURSDAY => ['09:00-12:00', '13:00-18:00'],
+            Day::FRIDAY => ['09:00-12:00', '13:00-20:00'],
+            Day::SATURDAY => ['09:00-12:00', '13:00-16:00'],
+            Day::SUNDAY => [],
         ]);
 
         $this->office = new LogisticOffice(
@@ -76,6 +76,39 @@ class LogisticOfficeTest extends TestCase
             '{"address":{"postcode":"","region":"","city":"","address_1":"","address_2":"","countryCode":null,"location":null},"phones":["88002000600","+78002000600"],"openingHours":{"monday":["09:00-12:00","13:00-18:00"],"tuesday":["09:00-12:00","13:00-18:00"],"wednesday":["09:00-12:00"],"thursday":["09:00-12:00","13:00-18:00"],"friday":["09:00-12:00","13:00-20:00"],"saturday":["09:00-12:00","13:00-16:00"],"sunday":[]}}',
             json_encode($this->office)
         );
+    }
+
+    public function testCreateFromArray(): void
+    {
+        $address = [
+            'postcode' => '',
+            'region' => 'region',
+            'city' => 'city',
+            'address_1' => 'a1',
+            'address_2' => '',
+            'countryCode' => null,
+            'location' => null
+        ];
+        $phones = [
+            '7898877777'
+        ];
+        $openingHours = [
+            Day::MONDAY => ['09:00-12:00', '13:00-18:00'],
+        ];
+        $data = [
+            'address' => $address,
+            'phones' => $phones,
+            'openingHours' => $openingHours
+        ];
+        $office = LogisticOffice::createFromArray($data);
+
+        $this->assertInstanceOf(LogisticOffice::class, $office);
+
+        $this->assertInstanceOf(Address::class, $office->getAddress());
+        $this->assertSame($address, $office->getAddress()->jsonSerialize());
+        $this->assertSame($phones, $office->getPhones());
+        $this->assertInstanceOf(OpeningHours::class, $office->getOpeningHours());
+        $this->assertSame($openingHours, $office->getOpeningHours()->jsonSerialize());
     }
 
 }
