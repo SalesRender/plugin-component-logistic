@@ -44,7 +44,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
      * @throws LogisticStatusTooLongException
      * @throws OutOfEnumException
      */
-    public function __construct(int $code, string $text = null, ?int $timestamp = null)
+    public function __construct(int $code, string $text = '', ?int $timestamp = null)
     {
         self::guardValidValue($code);
 
