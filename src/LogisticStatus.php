@@ -54,8 +54,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
 
         $this->code = $code;
 
-        $text = trim($text);
-        $this->text = empty($text) ? null : $text;
+        $this->text = trim($text);
 
         $this->timestamp = $timestamp ?? time();
 

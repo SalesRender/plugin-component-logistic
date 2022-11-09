@@ -49,22 +49,16 @@ class LogisticStatusTest extends TestCase
         $this->assertTrue((time() - $status->getTimestamp()) < 2);
     }
 
-    public function testConstructWithNullText(): void
-    {
-        $status = new LogisticStatus(LogisticStatus::ACCEPTED, null);
-        $this->assertNull($status->getText());
-    }
-
     public function testConstructWithEmptyText(): void
     {
         $status = new LogisticStatus(LogisticStatus::ACCEPTED, '');
-        $this->assertNull($status->getText());
+        $this->assertEmpty($status->getText());
     }
 
     public function testConstructWithEmptyWhitespaceText(): void
     {
         $status = new LogisticStatus(LogisticStatus::ACCEPTED, '   ');
-        $this->assertNull($status->getText());
+        $this->assertEmpty($status->getText());
     }
 
     public function testConstructWithTooLongText(): void
