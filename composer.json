@@ -18,7 +18,8 @@
     "leadvertex/component-money-value": "^0.1.0",
     "leadvertex/component-address": "^0.2.0",
     "spatie/opening-hours": "^2.10",
-    "xakepehok/value-object-builder": "^0.1.2"
+    "xakepehok/value-object-builder": "^0.1.2",
+    "php-dto/uri": "^0.1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5"
