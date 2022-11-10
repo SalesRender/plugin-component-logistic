@@ -32,7 +32,6 @@ class ShippingAttachmentTest extends TestCase
         return [
             [''],
             ['    '],
-            ['name'],
             [str_repeat('name', 500)],
         ];
     }

@@ -18,8 +18,8 @@ class ShippingAttachment implements JsonSerializable
     public function __construct(string $name, Uri $uri)
     {
         $name = trim($name);
-        if (mb_strlen($name) <= 5 || mb_strlen($name) >= 255) {
-            throw new ShippingAttachmentException('Attachment name should be more than 5 chars and less than 255 chars');
+        if (mb_strlen($name) < 1 || mb_strlen($name) > 255) {
+            throw new ShippingAttachmentException('Attachment name should be more than 1 chars and less than 255 chars');
         }
         $this->name = $name;
 
