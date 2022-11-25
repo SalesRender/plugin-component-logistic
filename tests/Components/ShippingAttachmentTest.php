@@ -49,6 +49,19 @@ class ShippingAttachmentTest extends TestCase
         $this->shippingAttachment = new ShippingAttachment($name, $this->uri);
     }
 
+    public function testCreateFromArray(): void
+    {
+        $data = [
+            'name' => 'my_attach',
+            'uri' => 'https://uri.com',
+        ];
+        $attachment = ShippingAttachment::createFromArray($data);
+
+        $this->assertInstanceOf(ShippingAttachment::class, $attachment);
+        $this->assertSame('my_attach', $attachment->getName());
+        $this->assertEquals(new Uri('https://uri.com'), $attachment->getUri());
+    }
+
     public function testJsonSerialize(): void
     {
         $this->assertSame([

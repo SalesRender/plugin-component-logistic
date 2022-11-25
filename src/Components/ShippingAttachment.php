@@ -4,6 +4,7 @@ namespace Leadvertex\Plugin\Components\Logistic\Components;
 
 use JsonSerializable;
 use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingAttachmentException;
+use PhpDto\Uri\Exception\UriException;
 use PhpDto\Uri\Uri;
 
 class ShippingAttachment implements JsonSerializable
@@ -34,6 +35,17 @@ class ShippingAttachment implements JsonSerializable
     public function getUri(): Uri
     {
         return $this->uri;
+    }
+
+    /**
+     * @param array $data
+     * @return ShippingAttachment
+     * @throws ShippingAttachmentException
+     * @throws UriException
+     */
+    public static function createFromArray(array $data): self
+    {
+        return new ShippingAttachment($data['name'], new Uri($data['uri']));
     }
 
     public function jsonSerialize(): array
