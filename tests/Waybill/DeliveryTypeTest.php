@@ -10,7 +10,7 @@ namespace Leadvertex\Plugin\Components\Logistic\Waybill;
 use PHPUnit\Framework\TestCase;
 use XAKEPEHOK\EnumHelper\Exception\OutOfEnumException;
 
-class DeliveryTest extends TestCase
+class DeliveryTypeTest extends TestCase
 {
 
     private DeliveryType $delivery;
@@ -34,11 +34,11 @@ class DeliveryTest extends TestCase
 
     public function testGetValues(): void
     {
-        $this->assertSame([300, 200, 100], DeliveryType::values());
+        $this->assertSame(['COURIER', 'PICKUP_POINT', 'SELF_PICKUP'], DeliveryType::values());
     }
 
     public function testJsonSerialize()
     {
-        $this->assertSame('200', json_encode($this->delivery));
+        $this->assertSame('"PICKUP_POINT"', json_encode($this->delivery));
     }
 }
