@@ -136,7 +136,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
             'timestamp' => $this->getTimestamp(),
             'code' => $this->getCode(),
             'text' => $this->getText(),
-            'office' => $this->getOffice() !== null ? $this->getOffice()->jsonSerialize() : null,
+            'office' => $this->getOffice(),
         ];
     }
 }

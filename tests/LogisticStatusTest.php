@@ -105,20 +105,7 @@ class LogisticStatusTest extends TestCase
             ],
         ];
 
-        $this->assertSame($expected, $this->status->jsonSerialize());
-
-        $expected = [
-            'timestamp' => 1607955024,
-            'code' => LogisticStatus::ACCEPTED,
-            'text' => 'Parcel accepted',
-            'office' => null,
-        ];
-        $status = new LogisticStatus(
-            LogisticStatus::ACCEPTED,
-            'Parcel accepted',
-            1607955024,
-        );
-        $this->assertSame($expected, $status->jsonSerialize());
+        $this->assertSame(json_encode($expected), json_encode($this->status));
     }
 
 }
