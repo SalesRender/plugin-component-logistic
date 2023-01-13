@@ -35,16 +35,18 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     protected int $code;
     protected ?string $text;
     protected string $hash;
+    protected ?LogisticOffice $office;
 
     /**
      * LogisticStatus constructor.
      * @param int $code
      * @param string|null $text
      * @param int|null $timestamp
+     * @param LogisticOffice|null $office
      * @throws LogisticStatusTooLongException
      * @throws OutOfEnumException
      */
-    public function __construct(int $code, string $text = '', ?int $timestamp = null)
+    public function __construct(int $code, string $text = '', ?int $timestamp = null, ?LogisticOffice $office = null)
     {
         self::guardValidValue($code);
 
@@ -57,6 +59,8 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
         $this->text = trim($text);
 
         $this->timestamp = $timestamp ?? time();
+
+        $this->office = $office;
 
         $this->hash = md5(json_encode($this->jsonSerialize()));
     }
@@ -79,6 +83,11 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     public function getHash(): string
     {
         return $this->hash;
+    }
+
+    public function getOffice(): ?LogisticOffice
+    {
+        return $this->office;
     }
 
     public static function values(): array
@@ -127,6 +136,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
             'timestamp' => $this->getTimestamp(),
             'code' => $this->getCode(),
             'text' => $this->getText(),
+            'office' => $this->getOffice(),
         ];
     }
 }
