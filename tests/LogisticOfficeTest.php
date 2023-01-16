@@ -109,6 +109,13 @@ class LogisticOfficeTest extends TestCase
         $this->assertSame($phones, $office->getPhones());
         $this->assertInstanceOf(OpeningHours::class, $office->getOpeningHours());
         $this->assertSame($openingHours, $office->getOpeningHours()->jsonSerialize());
+
+        $office = LogisticOffice::createFromArray(['address' => null, 'phones' => ['+79889998877'], 'openingHours' => null]);
+
+        $this->assertInstanceOf(LogisticOffice::class, $office);
+        $this->assertNull($office->getAddress());
+        $this->assertSame(['+79889998877'], $office->getPhones());
+        $this->assertNull($office->getOpeningHours());
     }
 
 }

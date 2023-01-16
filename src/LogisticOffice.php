@@ -74,19 +74,23 @@ class LogisticOffice implements JsonSerializable
      */
     public static function createFromArray(array $data): self
     {
-        return new LogisticOffice(
-            VOB::buildFromValues(Address::class, [
-                $data['address']['region'],
-                $data['address']['city'],
-                $data['address']['address_1'],
-                $data['address']['address_2'] ?? '',
-                $data['address']['postcode'] ?? '',
-                $data['address']['countryCode'] ?? null,
-                VOB::buildFromValues(Location::class, [
-                    $data['address']['location']['latitude'] ?? null,
-                    $data['address']['location']['longitude'] ?? null,
-                ]),
+        $address = ($data['address'] === null)
+            ? null
+            : VOB::buildFromValues(Address::class, [
+            $data['address']['region'],
+            $data['address']['city'],
+            $data['address']['address_1'],
+            $data['address']['address_2'] ?? '',
+            $data['address']['postcode'] ?? '',
+            $data['address']['countryCode'] ?? null,
+            VOB::buildFromValues(Location::class, [
+                $data['address']['location']['latitude'] ?? null,
+                $data['address']['location']['longitude'] ?? null,
             ]),
+        ]);
+
+        return new LogisticOffice(
+            $address,
             $data['phones'] ?? [],
             VOB::build(OpeningHours::class, $data['openingHours'] ?? null),
         );
