@@ -68,12 +68,15 @@ class LogisticOffice implements JsonSerializable
     }
 
     /**
-     * @param array $data
+     * @param ?array $data
      * @return static
      * @throws LogisticOfficePhoneException
      */
-    public static function createFromArray(array $data): self
+    public static function createFromArray(?array $data): ?self
     {
+        if ($data === null) {
+            return null;
+        }
         $address = ($data['address'] === null)
             ? null
             : VOB::buildFromValues(Address::class, [

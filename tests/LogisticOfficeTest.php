@@ -116,6 +116,8 @@ class LogisticOfficeTest extends TestCase
         $this->assertNull($office->getAddress());
         $this->assertSame(['+79889998877'], $office->getPhones());
         $this->assertNull($office->getOpeningHours());
+
+        $this->assertNull(LogisticOffice::createFromArray(null));
     }
 
 }
