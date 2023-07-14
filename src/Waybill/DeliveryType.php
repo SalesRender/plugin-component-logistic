@@ -15,24 +15,24 @@ use XAKEPEHOK\EnumHelper\Exception\OutOfEnumException;
 class DeliveryType extends EnumHelper implements JsonSerializable
 {
 
-    const SELF_PICKUP = 100;
-    const PICKUP_POINT = 200;
-    const COURIER = 300;
+    const SELF_PICKUP = 'SELF_PICKUP';
+    const PICKUP_POINT = 'PICKUP_POINT';
+    const COURIER = 'COURIER';
 
-    protected int $type;
+    protected string $type;
 
     /**
      * LogisticDelivery constructor.
-     * @param int $type
+     * @param string $type
      * @throws OutOfEnumException
      */
-    public function __construct(int $type)
+    public function __construct(string $type)
     {
         self::guardValidValue($type);
         $this->type = $type;
     }
 
-    public function get(): int
+    public function get(): string
     {
         return $this->type;
     }
@@ -46,7 +46,7 @@ class DeliveryType extends EnumHelper implements JsonSerializable
         ];
     }
 
-    public function jsonSerialize(): int
+    public function jsonSerialize(): string
     {
         return $this->type;
     }

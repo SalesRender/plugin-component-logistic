@@ -15,13 +15,17 @@ class LogisticStatusTest extends TestCase
 
     private LogisticStatus $status;
 
+    private LogisticOffice $office;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->office = new LogisticOffice(null, ['+79887776655'], null);
         $this->status = new LogisticStatus(
             LogisticStatus::ACCEPTED,
             'Parcel accepted',
-            1607955024
+            1607955024,
+            $this->office,
         );
     }
 
@@ -49,28 +53,59 @@ class LogisticStatusTest extends TestCase
         $this->assertTrue((time() - $status->getTimestamp()) < 2);
     }
 
-    public function testConstructWithNullText(): void
-    {
-        $status = new LogisticStatus(LogisticStatus::ACCEPTED, null);
-        $this->assertNull($status->getText());
-    }
-
     public function testConstructWithEmptyText(): void
     {
         $status = new LogisticStatus(LogisticStatus::ACCEPTED, '');
-        $this->assertNull($status->getText());
+        $this->assertEmpty($status->getText());
     }
 
     public function testConstructWithEmptyWhitespaceText(): void
     {
         $status = new LogisticStatus(LogisticStatus::ACCEPTED, '   ');
-        $this->assertNull($status->getText());
+        $this->assertEmpty($status->getText());
     }
 
     public function testConstructWithTooLongText(): void
     {
         $this->expectException(LogisticStatusTooLongException::class);
         new LogisticStatus(LogisticStatus::ACCEPTED, str_repeat('a', '251'));
+    }
+
+    public function testGetHash(): void
+    {
+        $hash = md5(json_encode($this->status->jsonSerialize()));
+        $this->assertSame($hash, $this->status->getHash());
+    }
+
+    public function testGetOffice(): void
+    {
+        $this->assertEquals($this->office, $this->status->getOffice());
+    }
+
+    public function testWithoutOffice(): void
+    {
+        $status = new LogisticStatus(
+            LogisticStatus::ACCEPTED,
+            'Parcel accepted',
+            1607955024,
+        );
+        $this->assertNull($status->getOffice());
+    }
+
+    public function testJsonSerialize(): void
+    {
+        $expected = [
+            'timestamp' => 1607955024,
+            'code' => LogisticStatus::ACCEPTED,
+            'text' => 'Parcel accepted',
+            'office' => [
+                'address' => null,
+                'phones' => ['+79887776655'],
+                'openingHours' => null,
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), json_encode($this->status));
     }
 
 }
