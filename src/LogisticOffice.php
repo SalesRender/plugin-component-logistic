@@ -80,6 +80,8 @@ class LogisticOffice implements JsonSerializable
                 $data['address']['city'],
                 $data['address']['address_1'],
                 $data['address']['address_2'] ?? '',
+                $data['address']['building'] ?? '',
+                $data['address']['apartment'] ?? '',
                 $data['address']['postcode'] ?? '',
                 $data['address']['countryCode'] ?? null,
                 VOB::buildFromValues(Location::class, [
