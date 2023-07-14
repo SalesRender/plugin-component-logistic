@@ -73,7 +73,7 @@ class LogisticOfficeTest extends TestCase
     public function testJsonSerialize(): void
     {
         $this->assertEquals(
-            '{"address":{"postcode":"","region":"","city":"","address_1":"","address_2":"","countryCode":null,"location":null},"phones":["88002000600","+78002000600"],"openingHours":{"monday":["09:00-12:00","13:00-18:00"],"tuesday":["09:00-12:00","13:00-18:00"],"wednesday":["09:00-12:00"],"thursday":["09:00-12:00","13:00-18:00"],"friday":["09:00-12:00","13:00-20:00"],"saturday":["09:00-12:00","13:00-16:00"],"sunday":[]}}',
+            '{"address":{"postcode":"","region":"","city":"","address_1":"","address_2":"","building":"","apartment":"","countryCode":null,"location":null},"phones":["88002000600","+78002000600"],"openingHours":{"monday":["09:00-12:00","13:00-18:00"],"tuesday":["09:00-12:00","13:00-18:00"],"wednesday":["09:00-12:00"],"thursday":["09:00-12:00","13:00-18:00"],"friday":["09:00-12:00","13:00-20:00"],"saturday":["09:00-12:00","13:00-16:00"],"sunday":[]}}',
             json_encode($this->office)
         );
     }
@@ -86,6 +86,8 @@ class LogisticOfficeTest extends TestCase
             'city' => 'city',
             'address_1' => 'a1',
             'address_2' => '',
+            'building' => '',
+            'apartment' => '',
             'countryCode' => null,
             'location' => null
         ];

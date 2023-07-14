@@ -80,17 +80,19 @@ class LogisticOffice implements JsonSerializable
         $address = ($data['address'] === null)
             ? null
             : VOB::buildFromValues(Address::class, [
-            $data['address']['region'],
-            $data['address']['city'],
-            $data['address']['address_1'],
-            $data['address']['address_2'] ?? '',
-            $data['address']['postcode'] ?? '',
-            $data['address']['countryCode'] ?? null,
-            VOB::buildFromValues(Location::class, [
-                $data['address']['location']['latitude'] ?? null,
-                $data['address']['location']['longitude'] ?? null,
-            ]),
-        ]);
+                $data['address']['region'],
+                $data['address']['city'],
+                $data['address']['address_1'],
+                $data['address']['address_2'] ?? '',
+                $data['address']['building'] ?? '',
+                $data['address']['apartment'] ?? '',
+                $data['address']['postcode'] ?? '',
+                $data['address']['countryCode'] ?? null,
+                VOB::buildFromValues(Location::class, [
+                    $data['address']['location']['latitude'] ?? null,
+                    $data['address']['location']['longitude'] ?? null,
+                ]),
+            ]);
 
         return new LogisticOffice(
             $address,
