@@ -1,9 +1,9 @@
 <?php
 
-namespace Leadvertex\Plugin\Components\Logistic\Components;
+namespace SalesRender\Plugin\Components\Logistic\Components;
 
 use JsonSerializable;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingAttachmentException;
+use SalesRender\Plugin\Components\Logistic\Exceptions\ShippingAttachmentException;
 use PhpDto\Uri\Exception\UriException;
 use PhpDto\Uri\Uri;
 

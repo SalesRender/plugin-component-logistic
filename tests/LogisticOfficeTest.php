@@ -5,10 +5,10 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic;
+namespace SalesRender\Plugin\Components\Logistic;
 
-use Leadvertex\Components\Address\Address;
-use Leadvertex\Plugin\Components\Logistic\Components\OpeningHours;
+use SalesRender\Components\Address\Address;
+use SalesRender\Plugin\Components\Logistic\Components\OpeningHours;
 use PHPUnit\Framework\TestCase;
 use Spatie\OpeningHours\Day;
 

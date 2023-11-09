@@ -5,11 +5,11 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic\Waybill;
+namespace SalesRender\Plugin\Components\Logistic\Waybill;
 
 
 use JsonSerializable;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticTrackException;
+use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticTrackException;
 
 class Track implements JsonSerializable
 {

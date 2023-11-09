@@ -5,11 +5,11 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic\Components;
+namespace SalesRender\Plugin\Components\Logistic\Components;
 
 
 use JsonSerializable;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\OpeningHoursException;
+use SalesRender\Plugin\Components\Logistic\Exceptions\OpeningHoursException;
 use Spatie\OpeningHours\Exceptions\Exception;
 
 class OpeningHours implements JsonSerializable

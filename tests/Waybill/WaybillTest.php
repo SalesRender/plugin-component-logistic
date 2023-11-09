@@ -5,10 +5,10 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic\Waybill;
+namespace SalesRender\Plugin\Components\Logistic\Waybill;
 
-use Leadvertex\Components\MoneyValue\MoneyValue;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\NegativePriceException;
+use SalesRender\Components\MoneyValue\MoneyValue;
+use SalesRender\Plugin\Components\Logistic\Exceptions\NegativePriceException;
 use PHPUnit\Framework\TestCase;
 
 class WaybillTest extends TestCase

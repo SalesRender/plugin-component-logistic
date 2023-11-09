@@ -5,9 +5,9 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic;
+namespace SalesRender\Plugin\Components\Logistic;
 
-use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticStatusTooLongException;
+use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticStatusTooLongException;
 use PHPUnit\Framework\TestCase;
 
 class LogisticStatusTest extends TestCase

@@ -5,11 +5,11 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic;
+namespace SalesRender\Plugin\Components\Logistic;
 
 
-use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
-use Leadvertex\Plugin\Components\Logistic\Waybill\Waybill;
+use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
+use SalesRender\Plugin\Components\Logistic\Waybill\Waybill;
 
 class Logistic
 {

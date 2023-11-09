@@ -5,7 +5,7 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic\Waybill;
+namespace SalesRender\Plugin\Components\Logistic\Waybill;
 
 
 use JsonSerializable;

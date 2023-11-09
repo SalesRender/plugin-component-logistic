@@ -5,9 +5,9 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic\Waybill;
+namespace SalesRender\Plugin\Components\Logistic\Waybill;
 
-use Leadvertex\Plugin\Components\Logistic\Exceptions\DeliveryTermsException;
+use SalesRender\Plugin\Components\Logistic\Exceptions\DeliveryTermsException;
 use PHPUnit\Framework\TestCase;
 
 class DeliveryTermsTest extends TestCase

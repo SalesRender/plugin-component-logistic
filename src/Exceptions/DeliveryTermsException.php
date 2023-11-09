@@ -5,7 +5,7 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic\Exceptions;
+namespace SalesRender\Plugin\Components\Logistic\Exceptions;
 
 
 use Exception;

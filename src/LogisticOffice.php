@@ -5,14 +5,14 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic;
+namespace SalesRender\Plugin\Components\Logistic;
 
 
 use JsonSerializable;
-use Leadvertex\Components\Address\Address;
-use Leadvertex\Components\Address\Location;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\LogisticOfficePhoneException;
-use Leadvertex\Plugin\Components\Logistic\Components\OpeningHours;
+use SalesRender\Components\Address\Address;
+use SalesRender\Components\Address\Location;
+use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticOfficePhoneException;
+use SalesRender\Plugin\Components\Logistic\Components\OpeningHours;
 use XAKEPEHOK\ValueObjectBuilder\VOB;
 
 class LogisticOffice implements JsonSerializable

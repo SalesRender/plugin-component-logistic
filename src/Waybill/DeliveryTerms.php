@@ -5,11 +5,11 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Logistic\Waybill;
+namespace SalesRender\Plugin\Components\Logistic\Waybill;
 
 
 use JsonSerializable;
-use Leadvertex\Plugin\Components\Logistic\Exceptions\DeliveryTermsException;
+use SalesRender\Plugin\Components\Logistic\Exceptions\DeliveryTermsException;
 
 class DeliveryTerms implements JsonSerializable
 {

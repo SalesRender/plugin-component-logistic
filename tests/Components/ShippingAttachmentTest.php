@@ -1,8 +1,8 @@
 <?php
 
-namespace Leadvertex\Plugin\Components\Logistic\Components;
+namespace SalesRender\Plugin\Components\Logistic\Components;
 
-use Leadvertex\Plugin\Components\Logistic\Exceptions\ShippingAttachmentException;
+use SalesRender\Plugin\Components\Logistic\Exceptions\ShippingAttachmentException;
 use PhpDto\Uri\Uri;
 use PHPUnit\Framework\TestCase;
 
