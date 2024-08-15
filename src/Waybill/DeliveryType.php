@@ -37,6 +37,15 @@ class DeliveryType extends EnumHelper implements JsonSerializable
         return $this->type;
     }
 
+    public function getAsString(): string
+    {
+        return self::switchCase($this->type, [
+            self::COURIER => 'COURIER',
+            self::PICKUP_POINT => 'PICKUP_POINT',
+            self::SELF_PICKUP => 'SELF_PICKUP',
+        ]);
+    }
+
     public static function values(): array
     {
         return [

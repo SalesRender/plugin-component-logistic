@@ -32,6 +32,13 @@ class DeliveryTypeTest extends TestCase
         $this->assertSame(DeliveryType::PICKUP_POINT, $this->delivery->get());
     }
 
+    public function testGetAsString(): void
+    {
+        $this->assertSame('PICKUP_POINT', (new DeliveryType(DeliveryType::PICKUP_POINT))->getAsString());
+        $this->assertSame('SELF_PICKUP', (new DeliveryType(DeliveryType::SELF_PICKUP))->getAsString());
+        $this->assertSame('COURIER', (new DeliveryType(DeliveryType::COURIER))->getAsString());
+    }
+
     public function testGetValues(): void
     {
         $this->assertSame(['COURIER', 'PICKUP_POINT', 'SELF_PICKUP'], DeliveryType::values());
