@@ -15,7 +15,6 @@
     "ext-json": "*",
     "ext-mbstring": "*",
     "xakepehok/enum-helper": "^0.1.0",
-    "salesrender/component-money-value": "^0.1.0",
     "salesrender/component-address": "^1.0.0",
     "spatie/opening-hours": "^2.10",
     "xakepehok/value-object-builder": "^0.1.2",

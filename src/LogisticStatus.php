@@ -30,6 +30,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     const RETURNED = 600;
     const RETURNING_TO_SENDER = 650;
     const DELIVERED_TO_SENDER = 699;
+    const UNKNOWN = 1000;
 
     protected int $timestamp;
     protected int $code;
@@ -107,6 +108,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
             self::RETURNED,
             self::RETURNING_TO_SENDER,
             self::DELIVERED_TO_SENDER,
+            self::UNKNOWN,
         ];
     }
 
@@ -127,6 +129,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
             self::RETURNED => 'RETURNED',
             self::RETURNING_TO_SENDER => 'RETURNING_TO_SENDER',
             self::DELIVERED_TO_SENDER => 'DELIVERED_TO_SENDER',
+            self::UNKNOWN => 'UNKNOWN',
         ]);
     }
 

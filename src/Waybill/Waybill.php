@@ -9,7 +9,6 @@ namespace SalesRender\Plugin\Components\Logistic\Waybill;
 
 
 use JsonSerializable;
-use SalesRender\Components\MoneyValue\MoneyValue;
 use SalesRender\Plugin\Components\Logistic\Exceptions\NegativePriceException;
 use XAKEPEHOK\ValueObjectBuilder\VOB;
 
@@ -18,7 +17,7 @@ class Waybill implements JsonSerializable
 
     protected ?Track $track = null;
 
-    protected ?MoneyValue $price = null;
+    protected ?float $cost = null;
 
     protected ?DeliveryTerms $deliveryTerms = null;
 
@@ -29,24 +28,24 @@ class Waybill implements JsonSerializable
     /**
      * Waybill constructor.
      * @param Track|null $track
-     * @param MoneyValue|null $price
+     * @param float|null $cost
      * @param DeliveryTerms|null $deliveryTerms
      * @param DeliveryType|null $deliveryType
      * @param bool|null $cod
      * @throws NegativePriceException
      */
     public function __construct(
-        Track $track = null,
-        MoneyValue $price = null,
+        Track         $track = null,
+        float         $cost = null,
         DeliveryTerms $deliveryTerms = null,
-        DeliveryType $deliveryType = null,
-        bool $cod = null
+        DeliveryType  $deliveryType = null,
+        bool          $cod = null
     )
     {
         $this->track = $track;
 
-        $this->guardPrice($price);
-        $this->price = $price;
+        $this->guardCost($cost);
+        $this->cost = $cost;
 
         $this->deliveryTerms = $deliveryTerms;
         $this->deliveryType = $deliveryType;
@@ -66,23 +65,21 @@ class Waybill implements JsonSerializable
         return $clone;
     }
 
-    public function getPrice(): ?MoneyValue
+    public function getCost(): ?float
     {
-        return $this->price;
+        return $this->cost;
     }
 
     /**
-     * @param MoneyValue|null $price
+     * @param float|null $cost
      * @return Waybill
      * @throws NegativePriceException
      */
-    public function setPrice(?MoneyValue $price): Waybill
+    public function setCost(?float $cost): Waybill
     {
-        $this->guardPrice($price);
-
+        $this->guardCost($cost);
         $clone = clone $this;
-        $clone->price = $price;
-
+        $clone->cost = $cost;
         return $clone;
     }
 
@@ -128,7 +125,7 @@ class Waybill implements JsonSerializable
     {
         return [
             'track' => $this->getTrack(),
-            'price' => $this->getPrice() ? $this->getPrice()->getAmount() : null,
+            'cost' => $this->getCost(),
             'deliveryTerms' => $this->getDeliveryTerms(),
             'deliveryType' => $this->getDeliveryType(),
             'cod' => $this->isCod(),
@@ -136,13 +133,13 @@ class Waybill implements JsonSerializable
     }
 
     /**
-     * @param MoneyValue|null $price
+     * @param float|null $cost
      * @throws NegativePriceException
      */
-    private function guardPrice(?MoneyValue $price): void
+    private function guardCost(?float $cost): void
     {
-        if ($price && $price->getAmount() < 0) {
-            throw new NegativePriceException('Logistic price can not be negative');
+        if ($cost && $cost < 0) {
+            throw new NegativePriceException('Shipping cost0 price can not be negative');
         }
     }
 
@@ -151,7 +148,7 @@ class Waybill implements JsonSerializable
         $terms = $data['deliveryTerms'] ?? [];
         return new Waybill(
             VOB::build(Track::class, $data['track'] ?? null),
-            VOB::build(MoneyValue::class, $data['price'] ?? null),
+            $data['cost'] ?? null,
             VOB::buildFromValues(DeliveryTerms::class, [$terms['minHours'] ?? null, $terms['maxHours'] ?? null]),
             VOB::build(DeliveryType::class, $data['deliveryType'] ?? null),
             $data['cod'] ?? null,

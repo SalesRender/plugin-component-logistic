@@ -7,7 +7,6 @@
 
 namespace SalesRender\Plugin\Components\Logistic\Waybill;
 
-use SalesRender\Components\MoneyValue\MoneyValue;
 use SalesRender\Plugin\Components\Logistic\Exceptions\NegativePriceException;
 use PHPUnit\Framework\TestCase;
 
@@ -25,21 +24,21 @@ class WaybillTest extends TestCase
     public function testConstruct(): void
     {
         $track = new Track('AB0_123-456-789cd');
-        $price = new MoneyValue(100500);
+        $cost = 1005.0;
         $deliveryTerms = new DeliveryTerms(1, 24);
         $deliveryType = new DeliveryType(DeliveryType::COURIER);
         $cod = true;
 
-        $waybill = new Waybill($track, $price, $deliveryTerms, $deliveryType, $cod);
+        $waybill = new Waybill($track, $cost, $deliveryTerms, $deliveryType, $cod);
         $this->assertSame($track, $waybill->getTrack());
-        $this->assertSame($price, $waybill->getPrice());
+        $this->assertSame($cost, $waybill->getCost());
         $this->assertSame($deliveryTerms, $waybill->getDeliveryTerms());
         $this->assertSame($deliveryType, $waybill->getDeliveryType());
         $this->assertTrue($waybill->isCod());
 
         $waybillNull = new Waybill();
         $this->assertNull($waybillNull->getTrack());
-        $this->assertNull($waybillNull->getPrice());
+        $this->assertNull($waybillNull->getCost());
         $this->assertNull($waybillNull->getDeliveryTerms());
         $this->assertNull($waybillNull->getDeliveryType());
         $this->assertNull($waybillNull->isCod());
@@ -48,7 +47,7 @@ class WaybillTest extends TestCase
     public function testConstructWithNegativePrice(): void
     {
         $this->expectException(NegativePriceException::class);
-        new Waybill(null, new MoneyValue(-100500));
+        new Waybill(null, -1);
     }
 
     public function testGetSetTrack(): void
@@ -69,24 +68,24 @@ class WaybillTest extends TestCase
 
     public function testGetSetPrice(): void
     {
-        $price = new MoneyValue(100500);
+        $price = 1005.0;
 
-        $this->assertNull($this->waybill->getPrice());
-        $waybill = $this->waybill->setPrice($price);
-        $this->assertNull($this->waybill->getPrice());
+        $this->assertNull($this->waybill->getCost());
+        $waybill = $this->waybill->setCost($price);
+        $this->assertNull($this->waybill->getCost());
         $this->assertNotSame($waybill, $this->waybill);
-        $this->assertSame($price, $waybill->getPrice());
+        $this->assertSame($price, $waybill->getCost());
 
-        $waybillNull = $waybill->setPrice(null);
-        $this->assertSame($price, $waybill->getPrice());
-        $this->assertNull($waybillNull->getPrice());
+        $waybillNull = $waybill->setCost(null);
+        $this->assertSame($price, $waybill->getCost());
+        $this->assertNull($waybillNull->getCost());
         $this->assertNotSame($waybill, $waybillNull);
     }
 
     public function testSetPriceInvalid(): void
     {
         $this->expectException(NegativePriceException::class);
-        $this->waybill->setPrice(new MoneyValue(-100500));
+        $this->waybill->setCost(-1);
     }
 
     public function testGetSetDeliveryTerms(): void
@@ -142,7 +141,7 @@ class WaybillTest extends TestCase
     {
         $waybill = Waybill::createFromArray([
             'track' => 'AB012345789CD',
-            'price' => 100500,
+            'cost' => 1005.0,
             'deliveryTerms' => [
                 'minHours' => 1,
                 'maxHours' => 10,
@@ -156,8 +155,7 @@ class WaybillTest extends TestCase
         $this->assertInstanceOf(Track::class, $waybill->getTrack());
         $this->assertEquals('AB012345789CD', $waybill->getTrack()->get());
 
-        $this->assertInstanceOf(MoneyValue::class, $waybill->getPrice());
-        $this->assertEquals(100500, $waybill->getPrice()->getAmount());
+        $this->assertEquals(1005.0, $waybill->getCost());
 
         $this->assertInstanceOf(DeliveryTerms::class, $waybill->getDeliveryTerms());
         $this->assertEquals(1, $waybill->getDeliveryTerms()->getMinHours());
@@ -172,7 +170,7 @@ class WaybillTest extends TestCase
 
         $waybill = Waybill::createFromArray([
             'track' => null,
-            'price' => null,
+            'cost' => null,
             'deliveryTerms' => null,
             'deliveryType' => null,
             'cod' => null,
@@ -180,7 +178,7 @@ class WaybillTest extends TestCase
 
         $this->assertInstanceOf(Waybill::class, $waybill);
         $this->assertNull($waybill->getTrack());
-        $this->assertNull($waybill->getPrice());
+        $this->assertNull($waybill->getCost());
         $this->assertNull($waybill->getDeliveryTerms());
         $this->assertNull($waybill->getDeliveryType());
         $this->assertNull($waybill->isCod());
