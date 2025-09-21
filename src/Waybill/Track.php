@@ -24,8 +24,8 @@ class Track implements JsonSerializable
     public function __construct(string $track)
     {
         $track = trim($track);
-        if (!preg_match('~^[a-z\d\-_]{6,25}$~ui', $track)) {
-            throw new LogisticTrackException("Track length should be between 6 and 25 chars, and contain only A-Z, 0-9, dash and underscore");
+        if (!preg_match('~^[a-z\d\-_]{6,36}$~ui', $track)) {
+            throw new LogisticTrackException("Track length should be between 6 and 36 chars, and contain only A-Z, 0-9, dash and underscore");
         }
         $this->track = $track;
     }

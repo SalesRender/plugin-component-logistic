@@ -39,7 +39,7 @@ class TrackTest extends TestCase
     {
         return [
             ['123456'],
-            [str_repeat('1', 25)],
+            [str_repeat('1', 36)],
             ['abc_ABC-123'],
             [' abc_ABC-123 '],
         ];
@@ -53,7 +53,7 @@ class TrackTest extends TestCase
             ['12345'],
             [' 12345 '],
             ['******'],
-            [str_repeat('1', 26)],
+            [str_repeat('1', 37)],
         ];
     }
 
