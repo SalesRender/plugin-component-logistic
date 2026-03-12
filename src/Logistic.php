@@ -9,16 +9,21 @@ namespace SalesRender\Plugin\Components\Logistic;
 
 
 use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
+use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticTagTooLongException;
 use SalesRender\Plugin\Components\Logistic\Waybill\Waybill;
 
 class Logistic
 {
+
+    public const MAX_TAG_LENGTH = 255;
 
     protected Waybill $waybill;
 
     protected LogisticStatus $status;
 
     protected ?array $data = null;
+
+    protected ?string $tag = null;
 
     /**
      * Logistic constructor.
@@ -76,6 +81,39 @@ class Logistic
         }
 
         $this->data = $data;
+    }
+
+    public function getTag(): ?string
+    {
+        return $this->tag;
+    }
+
+    /**
+     * @throws LogisticTagTooLongException
+     */
+    public function setTag(?string $tag): void
+    {
+        if ($tag === null) {
+            $this->tag = null;
+            return;
+        }
+
+        $this->guardTagLength($tag, 'tag');
+        $this->tag = $tag;
+    }
+
+    /**
+     * @throws LogisticTagTooLongException
+     */
+    protected function guardTagLength(string $tag, string $fieldName): void
+    {
+        if (mb_strlen($tag) > self::MAX_TAG_LENGTH) {
+            throw new LogisticTagTooLongException(sprintf(
+                'Logistic %s length should be less than or equal to %d chars',
+                $fieldName,
+                self::MAX_TAG_LENGTH
+            ));
+        }
     }
 
 }
