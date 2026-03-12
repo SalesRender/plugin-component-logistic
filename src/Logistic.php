@@ -23,7 +23,7 @@ class Logistic
 
     protected ?array $data = null;
 
-    protected ?string $tag_1 = null;
+    protected ?string $tag = null;
 
     /**
      * Logistic constructor.
@@ -83,23 +83,23 @@ class Logistic
         $this->data = $data;
     }
 
-    public function getTag_1(): ?string
+    public function getTag(): ?string
     {
-        return $this->tag_1;
+        return $this->tag;
     }
 
     /**
      * @throws LogisticTagTooLongException
      */
-    public function setTag_1(?string $tag_1): void
+    public function setTag(?string $tag): void
     {
-        if ($tag_1 === null) {
-            $this->tag_1 = null;
+        if ($tag === null) {
+            $this->tag = null;
             return;
         }
 
-        $this->guardTagLength($tag_1, 'tag_1');
-        $this->tag_1 = $tag_1;
+        $this->guardTagLength($tag, 'tag');
+        $this->tag = $tag;
     }
 
     /**
