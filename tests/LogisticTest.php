@@ -8,6 +8,7 @@
 namespace SalesRender\Plugin\Components\Logistic;
 
 use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticDataTooBigException;
+use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticTagTooLongException;
 use SalesRender\Plugin\Components\Logistic\Waybill\Waybill;
 use PHPUnit\Framework\TestCase;
 
@@ -77,6 +78,30 @@ class LogisticTest extends TestCase
             $data[md5(random_bytes(10))] = md5(random_bytes(10));
         }
         new Logistic($this->info, $this->status, $data);
+    }
+
+    public function testTag1DefaultsToNull(): void
+    {
+        $logistic = new Logistic($this->info, $this->status, $this->data);
+        $this->assertNull($logistic->getTag_1());
+    }
+
+    public function testGetSetTag1(): void
+    {
+        $this->assertNull($this->logistic->getTag_1());
+
+        $tag1 = 'test-tag-1';
+        $this->logistic->setTag_1($tag1);
+        $this->assertSame($tag1, $this->logistic->getTag_1());
+
+        $this->logistic->setTag_1(null);
+        $this->assertNull($this->logistic->getTag_1());
+    }
+
+    public function testSetTooLongTag1(): void
+    {
+        $this->expectException(LogisticTagTooLongException::class);
+        $this->logistic->setTag_1(str_repeat('a', Logistic::MAX_TAG_LENGTH + 1));
     }
 
 }
