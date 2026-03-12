@@ -80,13 +80,13 @@ class LogisticTest extends TestCase
         new Logistic($this->info, $this->status, $data);
     }
 
-    public function testTag1DefaultsToNull(): void
+    public function testTagDefaultsToNull(): void
     {
         $logistic = new Logistic($this->info, $this->status, $this->data);
         $this->assertNull($logistic->getTag());
     }
 
-    public function testGetSetTag1(): void
+    public function testGetSetTag(): void
     {
         $this->assertNull($this->logistic->getTag());
 
@@ -98,7 +98,7 @@ class LogisticTest extends TestCase
         $this->assertNull($this->logistic->getTag());
     }
 
-    public function testSetTooLongTag1(): void
+    public function testSetTooLongTag(): void
     {
         $this->expectException(LogisticTagTooLongException::class);
         $this->logistic->setTag(str_repeat('a', Logistic::MAX_TAG_LENGTH + 1));
