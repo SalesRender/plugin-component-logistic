@@ -32,7 +32,7 @@ class Logistic
      * @param array|null $data
      * @throws LogisticDataTooBigException
      */
-    public function __construct(Waybill $waybill, LogisticStatus $status, array $data = null)
+    public function __construct(Waybill $waybill, LogisticStatus $status, ?array $data = null)
     {
         $this->waybill = $waybill;
         $this->status = $status;

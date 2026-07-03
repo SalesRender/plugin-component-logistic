@@ -35,11 +35,11 @@ class Waybill implements JsonSerializable
      * @throws NegativePriceException
      */
     public function __construct(
-        Track         $track = null,
-        float         $shippingCost = null,
-        DeliveryTerms $deliveryTerms = null,
-        DeliveryType  $deliveryType = null,
-        bool          $cod = null
+        ?Track         $track = null,
+        ?float         $shippingCost = null,
+        ?DeliveryTerms $deliveryTerms = null,
+        ?DeliveryType  $deliveryType = null,
+        ?bool          $cod = null
     )
     {
         $this->track = $track;

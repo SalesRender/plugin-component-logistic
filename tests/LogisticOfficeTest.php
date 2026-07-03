@@ -34,13 +34,13 @@ class LogisticOfficeTest extends TestCase
             '+78002000600',
         ];
         $this->openingHours = new OpeningHours([
-            Day::MONDAY => ['09:00-12:00', '13:00-18:00'],
-            Day::TUESDAY => ['09:00-12:00', '13:00-18:00'],
-            Day::WEDNESDAY => ['09:00-12:00'],
-            Day::THURSDAY => ['09:00-12:00', '13:00-18:00'],
-            Day::FRIDAY => ['09:00-12:00', '13:00-20:00'],
-            Day::SATURDAY => ['09:00-12:00', '13:00-16:00'],
-            Day::SUNDAY => [],
+            Day::MONDAY->value => ['09:00-12:00', '13:00-18:00'],
+            Day::TUESDAY->value => ['09:00-12:00', '13:00-18:00'],
+            Day::WEDNESDAY->value => ['09:00-12:00'],
+            Day::THURSDAY->value => ['09:00-12:00', '13:00-18:00'],
+            Day::FRIDAY->value => ['09:00-12:00', '13:00-20:00'],
+            Day::SATURDAY->value => ['09:00-12:00', '13:00-16:00'],
+            Day::SUNDAY->value => [],
         ]);
 
         $this->office = new LogisticOffice(
@@ -98,7 +98,7 @@ class LogisticOfficeTest extends TestCase
             '7898877777'
         ];
         $openingHours = [
-            Day::MONDAY => ['09:00-12:00', '13:00-18:00'],
+            Day::MONDAY->value => ['09:00-12:00', '13:00-18:00'],
         ];
         $data = [
             'address' => $address,

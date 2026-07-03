@@ -4,6 +4,7 @@ namespace SalesRender\Plugin\Components\Logistic\Components;
 
 use SalesRender\Plugin\Components\Logistic\Exceptions\ShippingAttachmentException;
 use PhpDto\Uri\Uri;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ShippingAttachmentTest extends TestCase
@@ -27,7 +28,7 @@ class ShippingAttachmentTest extends TestCase
         $this->assertSame($this->uri, $this->shippingAttachment->getUri());
     }
 
-    public function invalidNames(): array
+    public static function invalidNames(): array
     {
         return [
             [''],
@@ -37,12 +38,11 @@ class ShippingAttachmentTest extends TestCase
     }
 
     /**
-     * @dataProvider invalidNames
-     *
      * @param string $name
      * @return void
      * @throws ShippingAttachmentException
      */
+    #[DataProvider('invalidNames')]
     public function testFailedCreate(string $name): void
     {
         $this->expectException(ShippingAttachmentException::class);

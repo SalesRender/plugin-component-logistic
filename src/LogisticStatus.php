@@ -16,21 +16,21 @@ use XAKEPEHOK\EnumHelper\Exception\OutOfEnumException;
 class LogisticStatus extends EnumHelper implements JsonSerializable
 {
 
-    const UNREGISTERED = -1;
-    const CREATED = 1;
-    const REGISTERED = 50;
-    const ACCEPTED = 100;
-    const PACKED = 150;
-    const IN_TRANSIT = 200;
-    const ARRIVED = 300;
-    const ON_DELIVERY = 400;
-    const PENDING = 450;
-    const DELIVERED = 500;
-    const PAID = 550;
-    const RETURNED = 600;
-    const RETURNING_TO_SENDER = 650;
-    const DELIVERED_TO_SENDER = 699;
-    const UNKNOWN = 1000;
+    const int UNREGISTERED = -1;
+    const int CREATED = 1;
+    const int REGISTERED = 50;
+    const int ACCEPTED = 100;
+    const int PACKED = 150;
+    const int IN_TRANSIT = 200;
+    const int ARRIVED = 300;
+    const int ON_DELIVERY = 400;
+    const int PENDING = 450;
+    const int DELIVERED = 500;
+    const int PAID = 550;
+    const int RETURNED = 600;
+    const int RETURNING_TO_SENDER = 650;
+    const int DELIVERED_TO_SENDER = 699;
+    const int UNKNOWN = 1000;
 
     protected int $timestamp;
     protected int $code;
@@ -40,12 +40,8 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
 
     /**
      * LogisticStatus constructor.
-     * @param int $code
-     * @param string|null $text
-     * @param int|null $timestamp
-     * @param LogisticOffice|null $office
-     * @throws LogisticStatusTooLongException
      * @throws OutOfEnumException
+     * @throws LogisticStatusTooLongException
      */
     public function __construct(int $code, string $text = '', ?int $timestamp = null, ?LogisticOffice $office = null)
     {

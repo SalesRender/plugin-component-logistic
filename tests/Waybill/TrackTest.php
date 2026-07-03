@@ -8,16 +8,17 @@
 namespace SalesRender\Plugin\Components\Logistic\Waybill;
 
 use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticTrackException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TrackTest extends TestCase
 {
 
     /**
-     * @dataProvider validTrackDataProvider
      * @param string $number
      * @throws LogisticTrackException
      */
+    #[DataProvider('validTrackDataProvider')]
     public function testConstructValidTrack(string $number): void
     {
         $track = new Track($number);
@@ -26,16 +27,16 @@ class TrackTest extends TestCase
     }
 
     /**
-     * @dataProvider invalidTrackDataProvider
      * @param string $track
      */
+    #[DataProvider('invalidTrackDataProvider')]
     public function testConstructInvalidTrack(string $track): void
     {
         $this->expectException(LogisticTrackException::class);
         new Track($track);
     }
 
-    public function validTrackDataProvider(): array
+    public static function validTrackDataProvider(): array
     {
         return [
             ['123456'],
@@ -45,7 +46,7 @@ class TrackTest extends TestCase
         ];
     }
 
-    public function invalidTrackDataProvider(): array
+    public static function invalidTrackDataProvider(): array
     {
         return [
             ['      '],
