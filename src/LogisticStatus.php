@@ -8,6 +8,7 @@
 namespace SalesRender\Plugin\Components\Logistic;
 
 
+use InvalidArgumentException;
 use JsonSerializable;
 use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticStatusTooLongException;
 use XAKEPEHOK\EnumHelper\EnumHelper;
@@ -37,6 +38,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     protected ?string $text;
     protected string $hash;
     protected ?LogisticOffice $office;
+    protected ?int $index = null;
 
     /**
      * LogisticStatus constructor.
@@ -63,7 +65,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
 
         $this->office = $office;
 
-        $this->hash = md5(json_encode($this->jsonSerialize()));
+        $this->hash = $this->calculateHash();
     }
 
     public function getTimestamp(): int
@@ -89,6 +91,28 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     public function getOffice(): ?LogisticOffice
     {
         return $this->office;
+    }
+
+    public function getIndex(): ?int
+    {
+        return $this->index;
+    }
+
+    /**
+     * Sequence number of the status within a specific shipping. Protects the status
+     * from being overwritten by an older status delivered out of order.
+     * Does not participate in hash calculation.
+     */
+    public function withIndex(int $index): self
+    {
+        if ($index <= 0) {
+            throw new InvalidArgumentException('Index should be positive integer');
+        }
+
+        $clone = clone $this;
+        $clone->index = $index;
+
+        return $clone;
     }
 
     public static function values(): array
@@ -140,6 +164,23 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
             'code' => $this->getCode(),
             'text' => $this->getText(),
             'office' => $this->getOffice(),
+            'index' => $this->getIndex(),
         ];
+    }
+
+    /**
+     * The hash is calculated from a fixed set of fields and does not depend on
+     * the index: otherwise previously stored hashes in
+     * Track::notificationsHashes would stop matching, and deduplication
+     * would produce duplicates
+     */
+    private function calculateHash(): string
+    {
+        return md5(json_encode([
+            'timestamp' => $this->getTimestamp(),
+            'code' => $this->getCode(),
+            'text' => $this->getText(),
+            'office' => $this->getOffice(),
+        ]));
     }
 }

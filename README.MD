@@ -55,11 +55,19 @@ Represents a shipment status at a point in time. Extends `EnumHelper` and implem
 | `getTimestamp()` | `int` | Unix timestamp of this status event. |
 | `getCode()` | `int` | Numeric status code (see table below). |
 | `getText()` | `?string` | Human-readable status description. |
-| `getHash()` | `string` | MD5 hash of the serialized status, used for deduplication. |
+| `getHash()` | `string` | MD5 hash of a fixed set of fields (`timestamp`, `code`, `text`, `office`), used for deduplication. Does not depend on `index`. |
 | `getOffice()` | `?LogisticOffice` | Office/pickup point associated with this status. |
+| `getIndex()` | `?int` | Sequence number of the status notification for a specific shipping, or `null` if not set. |
+| `withIndex(int $index)` | `self` | Returns a new `LogisticStatus` with the given notification index. Throws `InvalidArgumentException` if the value is not a positive integer. Does not affect the hash. |
 | `values()` | `array` | Returns all valid status codes. |
 | `code2strings()` | `array` | Returns associative array mapping codes to string names. |
-| `jsonSerialize()` | `array` | Returns `['timestamp', 'code', 'text', 'office']`. |
+| `jsonSerialize()` | `array` | Returns `['timestamp', 'code', 'text', 'office', 'index']`. |
+
+#### Notification index
+
+`index` is a positive per-shipping sequence number assigned to each outgoing status notification. It protects against out-of-order delivery of asynchronous notifications (parallel queue workers, retries): the consumer stores the index along with the status and applies an incoming status only when its index is greater than the stored one.
+
+The index is never part of the status hash, so previously stored hashes stay comparable and no duplicate notifications are created after upgrading. Statuses created before this feature (or never notified) have `index = null`; consumers should fall back to the previous behavior when either side has no index.
 
 #### Status Code Reference
 
