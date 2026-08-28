@@ -7,6 +7,7 @@
 
 namespace SalesRender\Plugin\Components\Logistic;
 
+use InvalidArgumentException;
 use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticStatusTooLongException;
 use PHPUnit\Framework\TestCase;
 
@@ -73,8 +74,41 @@ class LogisticStatusTest extends TestCase
 
     public function testGetHash(): void
     {
-        $hash = md5(json_encode($this->status->jsonSerialize()));
+        $hash = md5(json_encode([
+            'timestamp' => $this->status->getTimestamp(),
+            'code' => $this->status->getCode(),
+            'text' => $this->status->getText(),
+            'office' => $this->status->getOffice(),
+        ]));
         $this->assertSame($hash, $this->status->getHash());
+    }
+
+    public function testGetHashNotAffectedByNotificationRevision(): void
+    {
+        $withRevision = $this->status->withNotificationRevision(1);
+        $this->assertSame($this->status->getHash(), $withRevision->getHash());
+    }
+
+    public function testGetNotificationRevision(): void
+    {
+        $this->assertNull($this->status->getNotificationRevision());
+    }
+
+    public function testWithNotificationRevision(): void
+    {
+        $withRevision = $this->status->withNotificationRevision(4);
+
+        $this->assertNotSame($this->status, $withRevision);
+        $this->assertNull($this->status->getNotificationRevision());
+        $this->assertSame(4, $withRevision->getNotificationRevision());
+        $this->assertSame($this->status->getCode(), $withRevision->getCode());
+        $this->assertSame($this->status->getTimestamp(), $withRevision->getTimestamp());
+    }
+
+    public function testWithNotificationRevisionNotPositive(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->status->withNotificationRevision(0);
     }
 
     public function testGetOffice(): void
@@ -103,9 +137,16 @@ class LogisticStatusTest extends TestCase
                 'phones' => ['+79887776655'],
                 'openingHours' => null,
             ],
+            'notificationRevision' => null,
         ];
 
         $this->assertSame(json_encode($expected), json_encode($this->status));
+    }
+
+    public function testJsonSerializeWithNotificationRevision(): void
+    {
+        $status = $this->status->withNotificationRevision(4);
+        $this->assertSame(4, $status->jsonSerialize()['notificationRevision']);
     }
 
 }

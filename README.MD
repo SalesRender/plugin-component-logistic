@@ -55,11 +55,19 @@ Represents a shipment status at a point in time. Extends `EnumHelper` and implem
 | `getTimestamp()` | `int` | Unix timestamp of this status event. |
 | `getCode()` | `int` | Numeric status code (see table below). |
 | `getText()` | `?string` | Human-readable status description. |
-| `getHash()` | `string` | MD5 hash of the serialized status, used for deduplication. |
+| `getHash()` | `string` | MD5 hash of a fixed set of fields (`timestamp`, `code`, `text`, `office`), used for deduplication. Does not depend on `notificationRevision`. |
 | `getOffice()` | `?LogisticOffice` | Office/pickup point associated with this status. |
+| `getNotificationRevision()` | `?int` | Sequence number of the status notification for a specific shipping, or `null` if not set. |
+| `withNotificationRevision(int $notificationRevision)` | `self` | Returns a new `LogisticStatus` with the given notification revision. Throws `InvalidArgumentException` if the value is not a positive integer. Does not affect the hash. |
 | `values()` | `array` | Returns all valid status codes. |
 | `code2strings()` | `array` | Returns associative array mapping codes to string names. |
-| `jsonSerialize()` | `array` | Returns `['timestamp', 'code', 'text', 'office']`. |
+| `jsonSerialize()` | `array` | Returns `['timestamp', 'code', 'text', 'office', 'notificationRevision']`. |
+
+#### Notification revision
+
+`notificationRevision` is a positive per-shipping sequence number assigned to each outgoing status notification. It protects against out-of-order delivery of asynchronous notifications (parallel queue workers, retries): the consumer stores the revision along with the status and applies an incoming status only when its revision is greater than the stored one.
+
+The revision is never part of the status hash, so previously stored hashes stay comparable and no duplicate notifications are created after upgrading. Statuses created before this feature (or never notified) have `notificationRevision = null`; consumers should fall back to the previous behavior when either side has no revision.
 
 #### Status Code Reference
 

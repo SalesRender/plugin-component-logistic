@@ -8,6 +8,7 @@
 namespace SalesRender\Plugin\Components\Logistic;
 
 
+use InvalidArgumentException;
 use JsonSerializable;
 use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticStatusTooLongException;
 use XAKEPEHOK\EnumHelper\EnumHelper;
@@ -37,6 +38,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     protected ?string $text;
     protected string $hash;
     protected ?LogisticOffice $office;
+    protected ?int $notificationRevision = null;
 
     /**
      * LogisticStatus constructor.
@@ -59,7 +61,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
 
         $this->office = $office;
 
-        $this->hash = md5(json_encode($this->jsonSerialize()));
+        $this->hash = $this->calculateHash();
     }
 
     public function getTimestamp(): int
@@ -85,6 +87,28 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     public function getOffice(): ?LogisticOffice
     {
         return $this->office;
+    }
+
+    public function getNotificationRevision(): ?int
+    {
+        return $this->notificationRevision;
+    }
+
+    /**
+     * Sequence number of the notification for a specific shipping. Protects the status
+     * from being overwritten by an older notification delivered out of order.
+     * Does not participate in hash calculation.
+     */
+    public function withNotificationRevision(int $notificationRevision): self
+    {
+        if ($notificationRevision <= 0) {
+            throw new InvalidArgumentException('Notification revision should be positive integer');
+        }
+
+        $clone = clone $this;
+        $clone->notificationRevision = $notificationRevision;
+
+        return $clone;
     }
 
     public static function values(): array
@@ -136,6 +160,23 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
             'code' => $this->getCode(),
             'text' => $this->getText(),
             'office' => $this->getOffice(),
+            'notificationRevision' => $this->getNotificationRevision(),
         ];
+    }
+
+    /**
+     * The hash is calculated from a fixed set of fields and does not depend on
+     * notificationRevision: otherwise previously stored hashes in
+     * Track::notificationsHashes would stop matching, and notifications
+     * would be created again
+     */
+    private function calculateHash(): string
+    {
+        return md5(json_encode([
+            'timestamp' => $this->getTimestamp(),
+            'code' => $this->getCode(),
+            'text' => $this->getText(),
+            'office' => $this->getOffice(),
+        ]));
     }
 }
