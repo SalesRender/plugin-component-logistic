@@ -7,6 +7,7 @@
 
 namespace SalesRender\Plugin\Components\Logistic;
 
+use InvalidArgumentException;
 use SalesRender\Plugin\Components\Logistic\Exceptions\LogisticStatusTooLongException;
 use PHPUnit\Framework\TestCase;
 
@@ -73,8 +74,41 @@ class LogisticStatusTest extends TestCase
 
     public function testGetHash(): void
     {
-        $hash = md5(json_encode($this->status->jsonSerialize()));
+        $hash = md5(json_encode([
+            'timestamp' => $this->status->getTimestamp(),
+            'code' => $this->status->getCode(),
+            'text' => $this->status->getText(),
+            'office' => $this->status->getOffice(),
+        ]));
         $this->assertSame($hash, $this->status->getHash());
+    }
+
+    public function testGetHashNotAffectedByIndex(): void
+    {
+        $withIndex = $this->status->withIndex(1);
+        $this->assertSame($this->status->getHash(), $withIndex->getHash());
+    }
+
+    public function testGetIndex(): void
+    {
+        $this->assertNull($this->status->getIndex());
+    }
+
+    public function testWithIndex(): void
+    {
+        $withIndex = $this->status->withIndex(4);
+
+        $this->assertNotSame($this->status, $withIndex);
+        $this->assertNull($this->status->getIndex());
+        $this->assertSame(4, $withIndex->getIndex());
+        $this->assertSame($this->status->getCode(), $withIndex->getCode());
+        $this->assertSame($this->status->getTimestamp(), $withIndex->getTimestamp());
+    }
+
+    public function testWithIndexNotPositive(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->status->withIndex(0);
     }
 
     public function testGetOffice(): void
@@ -103,9 +137,16 @@ class LogisticStatusTest extends TestCase
                 'phones' => ['+79887776655'],
                 'openingHours' => null,
             ],
+            'index' => null,
         ];
 
         $this->assertSame(json_encode($expected), json_encode($this->status));
+    }
+
+    public function testJsonSerializeWithIndex(): void
+    {
+        $status = $this->status->withIndex(4);
+        $this->assertSame(4, $status->jsonSerialize()['index']);
     }
 
 }
