@@ -38,7 +38,7 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
     protected ?string $text;
     protected string $hash;
     protected ?LogisticOffice $office;
-    protected ?int $notificationRevision = null;
+    protected ?int $index = null;
 
     /**
      * LogisticStatus constructor.
@@ -89,24 +89,24 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
         return $this->office;
     }
 
-    public function getNotificationRevision(): ?int
+    public function getIndex(): ?int
     {
-        return $this->notificationRevision;
+        return $this->index;
     }
 
     /**
-     * Sequence number of the notification for a specific shipping. Protects the status
-     * from being overwritten by an older notification delivered out of order.
+     * Sequence number of the status within a specific shipping. Protects the status
+     * from being overwritten by an older status delivered out of order.
      * Does not participate in hash calculation.
      */
-    public function withNotificationRevision(int $notificationRevision): self
+    public function withIndex(int $index): self
     {
-        if ($notificationRevision <= 0) {
-            throw new InvalidArgumentException('Notification revision should be positive integer');
+        if ($index <= 0) {
+            throw new InvalidArgumentException('Index should be positive integer');
         }
 
         $clone = clone $this;
-        $clone->notificationRevision = $notificationRevision;
+        $clone->index = $index;
 
         return $clone;
     }
@@ -160,15 +160,15 @@ class LogisticStatus extends EnumHelper implements JsonSerializable
             'code' => $this->getCode(),
             'text' => $this->getText(),
             'office' => $this->getOffice(),
-            'notificationRevision' => $this->getNotificationRevision(),
+            'index' => $this->getIndex(),
         ];
     }
 
     /**
      * The hash is calculated from a fixed set of fields and does not depend on
-     * notificationRevision: otherwise previously stored hashes in
-     * Track::notificationsHashes would stop matching, and notifications
-     * would be created again
+     * the index: otherwise previously stored hashes in
+     * Track::notificationsHashes would stop matching, and deduplication
+     * would produce duplicates
      */
     private function calculateHash(): string
     {

@@ -83,32 +83,32 @@ class LogisticStatusTest extends TestCase
         $this->assertSame($hash, $this->status->getHash());
     }
 
-    public function testGetHashNotAffectedByNotificationRevision(): void
+    public function testGetHashNotAffectedByIndex(): void
     {
-        $withRevision = $this->status->withNotificationRevision(1);
-        $this->assertSame($this->status->getHash(), $withRevision->getHash());
+        $withIndex = $this->status->withIndex(1);
+        $this->assertSame($this->status->getHash(), $withIndex->getHash());
     }
 
-    public function testGetNotificationRevision(): void
+    public function testGetIndex(): void
     {
-        $this->assertNull($this->status->getNotificationRevision());
+        $this->assertNull($this->status->getIndex());
     }
 
-    public function testWithNotificationRevision(): void
+    public function testWithIndex(): void
     {
-        $withRevision = $this->status->withNotificationRevision(4);
+        $withIndex = $this->status->withIndex(4);
 
-        $this->assertNotSame($this->status, $withRevision);
-        $this->assertNull($this->status->getNotificationRevision());
-        $this->assertSame(4, $withRevision->getNotificationRevision());
-        $this->assertSame($this->status->getCode(), $withRevision->getCode());
-        $this->assertSame($this->status->getTimestamp(), $withRevision->getTimestamp());
+        $this->assertNotSame($this->status, $withIndex);
+        $this->assertNull($this->status->getIndex());
+        $this->assertSame(4, $withIndex->getIndex());
+        $this->assertSame($this->status->getCode(), $withIndex->getCode());
+        $this->assertSame($this->status->getTimestamp(), $withIndex->getTimestamp());
     }
 
-    public function testWithNotificationRevisionNotPositive(): void
+    public function testWithIndexNotPositive(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->status->withNotificationRevision(0);
+        $this->status->withIndex(0);
     }
 
     public function testGetOffice(): void
@@ -137,16 +137,16 @@ class LogisticStatusTest extends TestCase
                 'phones' => ['+79887776655'],
                 'openingHours' => null,
             ],
-            'notificationRevision' => null,
+            'index' => null,
         ];
 
         $this->assertSame(json_encode($expected), json_encode($this->status));
     }
 
-    public function testJsonSerializeWithNotificationRevision(): void
+    public function testJsonSerializeWithIndex(): void
     {
-        $status = $this->status->withNotificationRevision(4);
-        $this->assertSame(4, $status->jsonSerialize()['notificationRevision']);
+        $status = $this->status->withIndex(4);
+        $this->assertSame(4, $status->jsonSerialize()['index']);
     }
 
 }
